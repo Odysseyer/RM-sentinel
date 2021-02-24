@@ -117,6 +117,9 @@
     }
 
 
+target_location_t target_location;
+
+
 /**
   * @brief          judge if gimbal reaches the limit by gyro
   * @param          gyro: rotation speed unit rad/s
@@ -163,6 +166,20 @@
   * @retval         none
   */
 static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set);
+
+typedef struct
+{
+  
+  int16_t center_x;
+  int16_t center_y;
+  int16_t t_x;
+  int16_t t_y;
+  int16_t t_z;
+  int16_t r_x;
+  int16_t r_y;
+  int16_t r_z;
+
+} target_location_t;
 
 /**
   * @brief          when gimbal behaviour mode is GIMBAL_ZERO_FORCE, the function is called
@@ -277,6 +294,15 @@ static void gimbal_motionless_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *
 static gimbal_behaviour_e gimbal_behaviour = GIMBAL_ZERO_FORCE;
 
 /**
+ * @description:  
+ * @param   *yaw: 储存转动大小的指针
+ * @param   *pitch: 储存转动大小的指针
+ * @return
+ */
+void turn_to_angle(fp32 *yaw, fp32 *pitch);
+
+
+/**
   * @brief          the function is called by gimbal_set_mode function in gimbal_task.c
   *                 the function set gimbal_behaviour variable, and set motor mode.
   * @param[in]      gimbal_mode_set: gimbal data
@@ -344,13 +370,10 @@ void gimbal_behaviour_mode_set(gimbal_control_t *gimbal_mode_set)
   */
 void gimbal_behaviour_control_set(fp32 *add_yaw, fp32 *add_pitch, gimbal_control_t *gimbal_control_set)
 {
-
     if (add_yaw == NULL || add_pitch == NULL || gimbal_control_set == NULL)
     {
         return;
     }
-
-
     if (gimbal_behaviour == GIMBAL_ZERO_FORCE)
     {
         gimbal_zero_force_control(add_yaw, add_pitch, gimbal_control_set);
@@ -362,10 +385,6 @@ void gimbal_behaviour_control_set(fp32 *add_yaw, fp32 *add_pitch, gimbal_control
     else if (gimbal_behaviour == GIMBAL_CALI)
     {
         gimbal_cali_control(add_yaw, add_pitch, gimbal_control_set);
-    }
-    else if (gimbal_behaviour == GIMBAL_ABSOLUTE_ANGLE)
-    {
-        gimbal_absolute_angle_control(add_yaw, add_pitch, gimbal_control_set);
     }
     else if (gimbal_behaviour == GIMBAL_RELATIVE_ANGLE)
     {
@@ -742,13 +761,10 @@ static void gimbal_relative_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control
     }
     static int16_t yaw_channel = 0, pitch_channel = 0;
 
-    rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->rc.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
-    rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->rc.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
+    turn_to_angle(yaw, pitch);
 
     *yaw = yaw_channel * YAW_RC_SEN - gimbal_control_set->gimbal_rc_ctrl->mouse.x * YAW_MOUSE_SEN;
     *pitch = pitch_channel * PITCH_RC_SEN + gimbal_control_set->gimbal_rc_ctrl->mouse.y * PITCH_MOUSE_SEN;
-
-
 }
 
 /**
@@ -776,3 +792,19 @@ static void gimbal_motionless_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *
     *yaw = 0.0f;
     *pitch = 0.0f;
 }
+
+void turn_to_angle(fp32 *yaw, fp32 *pitch)
+{
+  
+
+
+
+
+
+
+}
+
+
+
+
+

@@ -833,11 +833,6 @@ static void gimbal_set_control(gimbal_control_t *set_control)
         //raw模式下，直接发送控制值
         set_control->gimbal_yaw_motor.raw_cmd_current = add_yaw_angle;
     }
-    else if (set_control->gimbal_yaw_motor.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
-    {
-        //gyro模式下，陀螺仪角度控制
-        gimbal_absolute_angle_limit(&set_control->gimbal_yaw_motor, add_yaw_angle);
-    }
     else if (set_control->gimbal_yaw_motor.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
     {
         //enconde模式下，电机编码角度控制
@@ -849,11 +844,6 @@ static void gimbal_set_control(gimbal_control_t *set_control)
     {
         //raw模式下，直接发送控制值
         set_control->gimbal_pitch_motor.raw_cmd_current = add_pitch_angle;
-    }
-    else if (set_control->gimbal_pitch_motor.gimbal_motor_mode == GIMBAL_MOTOR_GYRO)
-    {
-        //gyro模式下，陀螺仪角度控制
-        gimbal_absolute_angle_limit(&set_control->gimbal_pitch_motor, add_pitch_angle);
     }
     else if (set_control->gimbal_pitch_motor.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
     {
