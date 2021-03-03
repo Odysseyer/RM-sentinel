@@ -65,6 +65,29 @@ extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 /* USER CODE BEGIN EV */
+#include "sys.h"
+#include "delay.h"
+
+#define OI_RXD7	PBin(12)
+
+uint8_t len7 = 0;	//接收计数
+uint8_t USART_buf7[11];  //接收缓冲区
+
+enum{
+	COM_START_BIT,
+	COM_D0_BIT,
+	COM_D1_BIT,
+	COM_D2_BIT,
+	COM_D3_BIT,
+	COM_D4_BIT,
+	COM_D5_BIT,
+	COM_D6_BIT,
+	COM_D7_BIT,
+	COM_STOP_BIT,
+};
+
+uint8_t recvStat7 = COM_STOP_BIT;
+uint8_t recvData7 = 0;
 
 /* USER CODE END EV */
 
@@ -201,6 +224,28 @@ void EXTI0_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles EXTI line1 interrupt.
+  * @brief DISTANCE_TO_RIGHT,timer6
+  */
+void EXTI1_IRQHandler(void)
+{
+  /* USER CODE BEGIN EXTI1_IRQn 0 */
+
+  /* USER CODE END EXTI1_IRQn 0 */
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
+  /* USER CODE BEGIN EXTI1_IRQn 1 */
+  if(OI_RXD7 == 0) 
+		{
+			if(recvStat7 == COM_STOP_BIT)
+			{
+				recvStat7 = COM_START_BIT;
+				TIM_Cmd(TIM6, ENABLE);
+			}
+		}
+  /* USER CODE END EXTI1_IRQn 1 */
+}
+
+/**
   * @brief This function handles EXTI line3 interrupt.
   */
 void EXTI3_IRQHandler(void)
@@ -258,6 +303,7 @@ void EXTI9_5_IRQHandler(void)
 
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
+  * @brief DISTANCE_TO_LEFT, timer7
   */
 void EXTI15_10_IRQHandler(void)
 {
@@ -342,5 +388,29 @@ void DMA2_Stream7_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
+void TIM7_IRQHandler(void)
+{  
+	if(TIM_GetFlagStatus(TIM7, TIM_FLAG_Update) != RESET)
+	{
+		TIM_ClearITPendingBit(TIM7, TIM_FLAG_Update);	
+		 recvStat7++;
+		if(recvStat7 == COM_STOP_BIT)
+		{
+			TIM_Cmd(TIM4, DISABLE);
+			USART_buf7[len7++] = recvData7;	
+			return;
+		}
+		if(OI_RXD7)
+		{
+			recvData7 |= (1 << (recvStat7 - 1));
+		}else{
+			recvData7 &= ~(1 << (recvStat7 - 1));
+		}	
+  }		
+}
+
+
+
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+

@@ -25,7 +25,6 @@ I2C_HandleTypeDef hi2c2;
 /* USER CODE END 0 */
 
 I2C_HandleTypeDef hi2c1;
-
 I2C_HandleTypeDef hi2c3;
 
 /* I2C1 init function */

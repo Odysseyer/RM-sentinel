@@ -38,11 +38,11 @@
   * @brief For Usb device.
   * @{
   */
-  
+
 /** @defgroup USBD_CDC_IF USBD_CDC_IF
   * @brief Usb VCP device module
   * @{
-  */ 
+  */
 
 /** @defgroup USBD_CDC_IF_Exported_Defines USBD_CDC_IF_Exported_Defines
   * @brief Defines.
@@ -64,7 +64,7 @@
 /* USER CODE BEGIN EXPORTED_TYPES */
 typedef struct
 {
-  int16_t center_x; // 装甲板中心 x 座标 [0,32767] (-1未检测到)
+  int16_t center_x; // 装甲板中�? x 座标 [0,32767] (-1未检测到)
   int16_t center_y;
   int16_t t_x; // 装甲板的位置向量 (x=right,y=down,z=forward)
   int16_t t_y;
