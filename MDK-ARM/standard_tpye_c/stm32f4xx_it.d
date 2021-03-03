@@ -54,3 +54,5 @@ standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/porta
 standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
 standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h
 standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+standard_tpye_c\stm32f4xx_it.o: ../Inc/sys.h
+standard_tpye_c\stm32f4xx_it.o: ../Inc/delay.h

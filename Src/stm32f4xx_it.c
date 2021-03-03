@@ -61,6 +61,8 @@
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
+extern TIM_HandleTypeDef htim6;
+extern TIM_HandleTypeDef htim7;
 extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
@@ -68,10 +70,13 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 #include "sys.h"
 #include "delay.h"
 
-#define OI_RXD7	PBin(12)
+#define OI_RXD7	PFin(1)			//distance to right
+#define OI_RXD6	PBin(12)		//DISTANCE TO left
 
 uint8_t len7 = 0;	//接收计数
-uint8_t USART_buf7[11];  //接收缓冲区
+uint8_t len6 = 0;	//接收计数
+uint8_t USART_buf7[11];  //接收缓冲�?
+uint8_t USART_buf6[11];  //接收缓冲�?
 
 enum{
 	COM_START_BIT,
@@ -87,7 +92,9 @@ enum{
 };
 
 uint8_t recvStat7 = COM_STOP_BIT;
+uint8_t recvStat6 = COM_STOP_BIT;
 uint8_t recvData7 = 0;
+uint8_t recvData6 = 0;
 
 /* USER CODE END EV */
 
@@ -225,7 +232,6 @@ void EXTI0_IRQHandler(void)
 
 /**
   * @brief This function handles EXTI line1 interrupt.
-  * @brief DISTANCE_TO_RIGHT,timer6
   */
 void EXTI1_IRQHandler(void)
 {
@@ -239,7 +245,7 @@ void EXTI1_IRQHandler(void)
 			if(recvStat7 == COM_STOP_BIT)
 			{
 				recvStat7 = COM_START_BIT;
-				TIM_Cmd(TIM6, ENABLE);
+				HAL_TIM_Base_Start_IT(&htim7);
 			}
 		}
   /* USER CODE END EXTI1_IRQn 1 */
@@ -303,7 +309,6 @@ void EXTI9_5_IRQHandler(void)
 
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
-  * @brief DISTANCE_TO_LEFT, timer7
   */
 void EXTI15_10_IRQHandler(void)
 {
@@ -312,8 +317,68 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
+	  if(OI_RXD6 == 0) 
+		{
+			if(recvStat6 == COM_STOP_BIT)
+			{
+				recvStat6 = COM_START_BIT;
+				HAL_TIM_Base_Start_IT(&htim6);
+			}
+		}
   /* USER CODE END EXTI15_10_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM6 global interrupt, DAC1 and DAC2 underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+			 recvStat6++;
+		if(recvStat6 == COM_STOP_BIT)
+		{
+			HAL_TIM_Base_Stop_IT(&htim6);
+			USART_buf6[len6++] = recvData6;	
+			return;
+		}
+		if(OI_RXD6)
+		{
+			recvData6 |= (1 << (recvStat6 - 1));
+		}else{
+			recvData6 &= ~(1 << (recvStat6 - 1));
+		}
+  /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM7 global interrupt.
+  */
+void TIM7_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM7_IRQn 0 */
+
+  /* USER CODE END TIM7_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim7);
+  /* USER CODE BEGIN TIM7_IRQn 1 */
+
+		 recvStat7++;
+		if(recvStat7 == COM_STOP_BIT)
+		{
+			HAL_TIM_Base_Stop_IT(&htim7);
+			USART_buf7[len7++] = recvData7;	
+			return;
+		}
+		if(OI_RXD7)
+		{
+			recvData7 |= (1 << (recvStat7 - 1));
+		}else{
+			recvData7 &= ~(1 << (recvStat7 - 1));
+		}
+  /* USER CODE END TIM7_IRQn 1 */
 }
 
 /**
@@ -388,29 +453,5 @@ void DMA2_Stream7_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 
-void TIM7_IRQHandler(void)
-{  
-	if(TIM_GetFlagStatus(TIM7, TIM_FLAG_Update) != RESET)
-	{
-		TIM_ClearITPendingBit(TIM7, TIM_FLAG_Update);	
-		 recvStat7++;
-		if(recvStat7 == COM_STOP_BIT)
-		{
-			TIM_Cmd(TIM4, DISABLE);
-			USART_buf7[len7++] = recvData7;	
-			return;
-		}
-		if(OI_RXD7)
-		{
-			recvData7 |= (1 << (recvStat7 - 1));
-		}else{
-			recvData7 &= ~(1 << (recvStat7 - 1));
-		}	
-  }		
-}
-
-
-
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
-
