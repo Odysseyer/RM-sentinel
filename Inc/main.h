@@ -61,9 +61,9 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BUTTON_TRIG_Pin GPIO_PIN_7
 #define BUTTON_TRIG_GPIO_Port GPIOI
-#define DITANCE_TO_RIGHTS_Pin GPIO_PIN_1
-#define DITANCE_TO_RIGHTS_GPIO_Port GPIOF
-#define DITANCE_TO_RIGHTS_EXTI_IRQn EXTI1_IRQn
+#define DISTANCE2_Pin GPIO_PIN_1
+#define DISTANCE2_GPIO_Port GPIOF
+#define DISTANCE2_EXTI_IRQn EXTI1_IRQn
 #define RSTN_IST8310_Pin GPIO_PIN_6
 #define RSTN_IST8310_GPIO_Port GPIOG
 #define LED_R_Pin GPIO_PIN_12
@@ -95,9 +95,11 @@ void Error_Handler(void);
 #define INT1_GYRO_Pin GPIO_PIN_5
 #define INT1_GYRO_GPIO_Port GPIOC
 #define INT1_GYRO_EXTI_IRQn EXTI9_5_IRQn
-#define DISTANCE_TO_LEFT_Pin GPIO_PIN_12
-#define DISTANCE_TO_LEFT_GPIO_Port GPIOB
-#define DISTANCE_TO_LEFT_EXTI_IRQn EXTI15_10_IRQn
+#define SPI2_CS_Pin GPIO_PIN_12
+#define SPI2_CS_GPIO_Port GPIOB
+#define DISTANCE1_Pin GPIO_PIN_13
+#define DISTANCE1_GPIO_Port GPIOB
+#define DISTANCE1_EXTI_IRQn EXTI15_10_IRQn
 #define CS1_GYRO_Pin GPIO_PIN_0
 #define CS1_GYRO_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */

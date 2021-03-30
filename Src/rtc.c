@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * @file    rtc.c
-  * @brief   This file provides code for the configuration
-  *          of the RTC instances.
+  * File Name          : RTC.c
+  * Description        : This file provides code for the configuration
+  *                      of the RTC instances.
   ******************************************************************************
   * @attention
   *

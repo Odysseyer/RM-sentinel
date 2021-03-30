@@ -21,8 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_it.h"
-#include "FreeRTOS.h"
-#include "task.h"
+#include "cmsis_os.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 /* USER CODE END Includes */
@@ -54,12 +53,11 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+#include "bsp_buzzer.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
-extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
@@ -67,16 +65,20 @@ extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 /* USER CODE BEGIN EV */
-#include "sys.h"
-#include "delay.h"
 
-#define OI_RXD7	PFin(1)			//distance to right
-#define OI_RXD6	PBin(12)		//DISTANCE TO left
+
+#define OI_RXD7	(GPIOF->IDR)&(0X2) 			//distance to right
+#define OI_RXD6	(GPIOB->IDR)&(0x2000)		//DISTANCE TO left
 
 uint8_t len7 = 0;	//接收计数
 uint8_t len6 = 0;	//接收计数
 uint8_t USART_buf7[11];  //接收缓冲�?
 uint8_t USART_buf6[11];  //接收缓冲�?
+
+uint16_t distance_to_left;
+uint16_t distance_to_right;
+
+extern void usb_printf(const char *fmt,...);
 
 enum{
 	COM_START_BIT,
@@ -240,7 +242,8 @@ void EXTI1_IRQHandler(void)
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
-  if(OI_RXD7 == 0) 
+	
+		if(!OI_RXD7) 
 		{
 			if(recvStat7 == COM_STOP_BIT)
 			{
@@ -248,6 +251,21 @@ void EXTI1_IRQHandler(void)
 				HAL_TIM_Base_Start_IT(&htim7);
 			}
 		}
+		
+		if(USART_buf7[0]!=0xff)
+		{
+			len7 = 0;
+		}
+		
+		if (len7 == 4)
+		{
+			distance_to_left = USART_buf7[1]*256 + USART_buf7[2];
+			len7 = 0 ;
+			//buzzer_on(31, 20000);
+		}
+		
+	
+	
   /* USER CODE END EXTI1_IRQn 1 */
 }
 
@@ -280,20 +298,6 @@ void EXTI4_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles CAN1 RX0 interrupts.
-  */
-void CAN1_RX0_IRQHandler(void)
-{
-  /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
-
-  /* USER CODE END CAN1_RX0_IRQn 0 */
-  HAL_CAN_IRQHandler(&hcan1);
-  /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
-
-  /* USER CODE END CAN1_RX0_IRQn 1 */
-}
-
-/**
   * @brief This function handles EXTI line[9:5] interrupts.
   */
 void EXTI9_5_IRQHandler(void)
@@ -315,15 +319,29 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */
 
   /* USER CODE END EXTI15_10_IRQn 0 */
-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-	  if(OI_RXD6 == 0) 
-		{
+//	buzzer_on(31, 20000);
+	if((OI_RXD6)==0)
+		{	//buzzer_on(31, 20000);
 			if(recvStat6 == COM_STOP_BIT)
 			{
 				recvStat6 = COM_START_BIT;
 				HAL_TIM_Base_Start_IT(&htim6);
+				//buzzer_on(31, 20000);
 			}
+		}
+			if(USART_buf6[0]!=0xff)
+		{
+			len6 = 0;
+		}
+		
+		if (len6 == 4)
+		{
+			distance_to_right = USART_buf6[1]*256 + USART_buf6[2];
+			len6 = 0 ;
+			//buzzer_on(31, 20000);
+			
 		}
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
@@ -338,7 +356,8 @@ void TIM6_DAC_IRQHandler(void)
   /* USER CODE END TIM6_DAC_IRQn 0 */
   HAL_TIM_IRQHandler(&htim6);
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
-			 recvStat6++;
+	
+	recvStat6++;
 		if(recvStat6 == COM_STOP_BIT)
 		{
 			HAL_TIM_Base_Stop_IT(&htim6);
@@ -351,6 +370,7 @@ void TIM6_DAC_IRQHandler(void)
 		}else{
 			recvData6 &= ~(1 << (recvStat6 - 1));
 		}
+	
   /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
@@ -365,7 +385,7 @@ void TIM7_IRQHandler(void)
   HAL_TIM_IRQHandler(&htim7);
   /* USER CODE BEGIN TIM7_IRQn 1 */
 
-		 recvStat7++;
+		recvStat7++;
 		if(recvStat7 == COM_STOP_BIT)
 		{
 			HAL_TIM_Base_Stop_IT(&htim7);
@@ -378,6 +398,10 @@ void TIM7_IRQHandler(void)
 		}else{
 			recvData7 &= ~(1 << (recvStat7 - 1));
 		}
+	
+	
+	
+	
   /* USER CODE END TIM7_IRQn 1 */
 }
 

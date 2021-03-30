@@ -33,9 +33,9 @@ standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_de
 standard_tpye_c\usb_task.o: ../Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy/stm32_hal_legacy.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h
+standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio_ex.h
-standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_exti.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma_ex.h
 standard_tpye_c\usb_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_cortex.h
@@ -75,3 +75,4 @@ standard_tpye_c\usb_task.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/
 standard_tpye_c\usb_task.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
 standard_tpye_c\usb_task.o: ..\application\detect_task.h
 standard_tpye_c\usb_task.o: ..\application\voltage_task.h
+standard_tpye_c\usb_task.o: ../Inc/stm32f4xx_it.h

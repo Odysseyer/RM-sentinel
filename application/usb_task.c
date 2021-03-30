@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-03-03 16:45:59
+ * @LastEditTime: 2021-03-30 17:02:10
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \MDK-ARMc:\Users\42517\Documents\GitHub\RM-sentinel\application\usb_task.c
+ */
 /**
   ****************************(C) COPYRIGHT 2019 DJI****************************
   * @file       usb_task.c/h
@@ -27,13 +35,15 @@
 #include "detect_task.h"
 #include "voltage_task.h"
 
+#include "stm32f4xx_it.h"
 
-static void usb_printf(const char *fmt,...);
+
+
+void usb_printf(const char *fmt,...);
 
 static uint8_t usb_buf[256];
 static const char status[2][7] = {"OK", "ERROR!"};
 const error_t *error_list_usb_local;
-
 
 
 void usb_task(void const * argument)
@@ -60,6 +70,7 @@ gyro sensor:%s\r\n\
 accel sensor:%s\r\n\
 mag sensor:%s\r\n\
 referee usart:%s\r\n\
+dis233:%x\r\n\
 ******************************\r\n",
             get_battery_percentage(), 
             status[error_list_usb_local[DBUS_TOE].error_exist],
@@ -73,15 +84,16 @@ referee usart:%s\r\n\
             status[error_list_usb_local[BOARD_GYRO_TOE].error_exist],
             status[error_list_usb_local[BOARD_ACCEL_TOE].error_exist],
             status[error_list_usb_local[BOARD_MAG_TOE].error_exist],
-            status[error_list_usb_local[REFEREE_TOE].error_exist]);
+            status[error_list_usb_local[REFEREE_TOE].error_exist],
+						(GPIOB->IDR)&(0x2000)
+						);
 
     }
 
 }
-
-static void usb_printf(const char *fmt,...)
+void usb_printf(const char *fmt,...)
 {
-    static va_list ap;
+    va_list ap;
     uint16_t len = 0;
 
     va_start(ap, fmt);
@@ -89,7 +101,6 @@ static void usb_printf(const char *fmt,...)
     len = vsprintf((char *)usb_buf, fmt, ap);
 
     va_end(ap);
-
 
     CDC_Transmit_FS(usb_buf, len);
 }
