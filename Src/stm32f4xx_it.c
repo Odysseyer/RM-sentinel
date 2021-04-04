@@ -58,6 +58,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_OTG_FS;
+extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
 extern TIM_HandleTypeDef htim6;
 extern TIM_HandleTypeDef htim7;
@@ -65,9 +66,9 @@ extern DMA_HandleTypeDef hdma_usart1_tx;
 extern DMA_HandleTypeDef hdma_usart6_rx;
 extern DMA_HandleTypeDef hdma_usart6_tx;
 /* USER CODE BEGIN EV */
+KFP KFP_height={0.02,0,0,0,0.001,0.543};
 
-
-#define OI_RXD7	(GPIOF->IDR)&(0X2) 			//distance to right
+#define OI_RXD7	(GPIOF->IDR)&(0X0002) 	//distance to right
 #define OI_RXD6	(GPIOB->IDR)&(0x2000)		//DISTANCE TO left
 
 uint8_t len7 = 0;	//接收计数
@@ -77,6 +78,8 @@ uint8_t USART_buf6[11];  //接收缓冲�?
 
 uint16_t distance_to_left;
 uint16_t distance_to_right;
+
+uint16_t flag = 0;
 
 extern void usb_printf(const char *fmt,...);
 
@@ -243,24 +246,30 @@ void EXTI1_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
 	
-		if(!OI_RXD7) 
+		if((OI_RXD7)==0) 
 		{
 			if(recvStat7 == COM_STOP_BIT)
 			{
 				recvStat7 = COM_START_BIT;
 				HAL_TIM_Base_Start_IT(&htim7);
+				flag = 1;
 			}
 		}
 		
 		if(USART_buf7[0]!=0xff)
 		{
 			len7 = 0;
+//			for(int i = 0; i<5 ;i++ ){
+//				USART_buf7[i] = 0;
+//			}
 		}
 		
 		if (len7 == 4)
 		{
 			distance_to_left = USART_buf7[1]*256 + USART_buf7[2];
+			distance_to_left = (uint16_t)kalmanFilter((double)distance_to_left);
 			len7 = 0 ;
+//			flag = 2;
 			//buzzer_on(31, 20000);
 		}
 		
@@ -295,6 +304,20 @@ void EXTI4_IRQHandler(void)
   /* USER CODE BEGIN EXTI4_IRQn 1 */
 
   /* USER CODE END EXTI4_IRQn 1 */
+}
+
+/**
+  * @brief This function handles CAN1 RX0 interrupts.
+  */
+void CAN1_RX0_IRQHandler(void)
+{
+  /* USER CODE BEGIN CAN1_RX0_IRQn 0 */
+
+  /* USER CODE END CAN1_RX0_IRQn 0 */
+  HAL_CAN_IRQHandler(&hcan1);
+  /* USER CODE BEGIN CAN1_RX0_IRQn 1 */
+
+  /* USER CODE END CAN1_RX0_IRQn 1 */
 }
 
 /**
@@ -334,14 +357,17 @@ void EXTI15_10_IRQHandler(void)
 			if(USART_buf6[0]!=0xff)
 		{
 			len6 = 0;
+//			for(int i = 0; i<5 ;i++ ){
+//				USART_buf6[i] = 0;
+//			}
 		}
 		
 		if (len6 == 4)
 		{
 			distance_to_right = USART_buf6[1]*256 + USART_buf6[2];
+      distance_to_right = (uint16_t)kalmanFilter((double)distance_to_right);
 			len6 = 0 ;
 			//buzzer_on(31, 20000);
-			
 		}
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
@@ -380,7 +406,11 @@ void TIM6_DAC_IRQHandler(void)
 void TIM7_IRQHandler(void)
 {
   /* USER CODE BEGIN TIM7_IRQn 0 */
-
+static int last_7 = 1 ;
+	if (last_7!=(OI_RXD7)){
+	flag=3;
+	}
+	
   /* USER CODE END TIM7_IRQn 0 */
   HAL_TIM_IRQHandler(&htim7);
   /* USER CODE BEGIN TIM7_IRQn 1 */
@@ -476,6 +506,17 @@ void DMA2_Stream7_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
-
+ double kalmanFilter(double input)
+ {
+     //????????k????????? = k-1???????? + ???????
+     KFP_height.Now_P = KFP_height.LastP + KFP_height.Q;
+     //????????????? = k????????? / ?k????????? + ????????
+     KFP_height.Kg = KFP_height.Now_P / (KFP_height.Now_P + KFP_height.R);
+     //????????k?????????? = ???????? + ????? * ???? - ?????????
+     KFP_height.out = KFP_height.out + KFP_height.Kg * (input -KFP_height.out);//??????????????????
+     //???????: ?????????? kfp->LastP ?????????
+     KFP_height.LastP = (1-KFP_height.Kg) * KFP_height.Now_P;
+     return KFP_height.out;
+ }
 /* USER CODE END 1 */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

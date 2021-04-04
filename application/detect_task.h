@@ -147,4 +147,10 @@ extern void detect_hook(uint8_t toe);
   */
 extern const error_t *get_error_list_point(void);
 
+extern uint16_t distance_to_left;
+extern uint16_t distance_to_right;
+
+
+
+
 #endif

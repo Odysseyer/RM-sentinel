@@ -19,6 +19,8 @@
 #include "chassis_task.h"
 #include "chassis_behaviour.h"
 
+#include "stm32f4xx_it.h"
+
 #include "cmsis_os.h"
 
 #include "arm_math.h"
@@ -40,6 +42,8 @@
             (output) = 0;                                \
         }                                                \
     }
+
+static fp32 vx_auto;
 
 
 /**
@@ -453,7 +457,6 @@ void chassis_rc_to_control_vector(fp32 *vx_set, fp32 *vy_set, chassis_move_t *ch
   */
 static void chassis_set_contorl(chassis_move_t *chassis_move_control)
 {
-
     if (chassis_move_control == NULL)
     {
         return;
@@ -519,6 +522,34 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
         chassis_move_control->chassis_cmd_slow_set_vx.out = 0.0f;
         chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
     }
+    else if (chassis_move_control->chassis_mode == CHASSIS_VECTOR_RAW)
+    {
+        //in auto mode
+        //在自动模式
+        // chassis_move_control->vx_set = vx_set;
+        chassis_move_control->vy_set = 0;
+        chassis_move_control->wz_set = 0;
+        chassis_move_control->chassis_cmd_slow_set_vx.out = 0.0f;
+        chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
+
+//BREAKPOINT: AUTO MODE TO MOTOR SET
+        if(chassis_move_control->chassis_auto_submode == NORMAL_TO_LEFT)
+        {
+          chassis_move_control->vx_set = 5;
+        }
+        else if(chassis_move_control->chassis_auto_submode == NORMAL_TO_RIGHT)
+        {
+          chassis_move_control->vx_set = -5;
+        }
+        // else if(chassis_move_control->chassis_auto_submode == DECLINE_TO_LEFT)
+        // {
+        //   chassis_move_control->vx_set -=0.05;
+        // }
+        // else if(chassis_move_control->chassis_auto_submode == NORMAL_TO_LEFT)
+        // {
+        //   chassis_move_control->vx_set +=0.05;
+        // }
+    }
 }
 
 /**
@@ -542,11 +573,10 @@ static void chassis_vector_to_mecanum_wheel_speed(const fp32 vx_set, const fp32 
     //because the gimbal is in front of chassis, when chassis rotates, wheel 0 and wheel 1 should be slower and wheel 2 and wheel 3 should be faster
     //旋转的时候， 由于云台靠前，所以是前面两轮 0 ，1 旋转的速度变慢， 后面两轮 2,3 旋转的速度变快
     wheel_speed[0] = -vx_set - vy_set + (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
-    wheel_speed[1] = vx_set - vy_set + (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
-    wheel_speed[2] = vx_set + vy_set + (-CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
+    wheel_speed[1] =  vx_set - vy_set + (CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
+    wheel_speed[2] =  vx_set + vy_set + (-CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
     wheel_speed[3] = -vx_set + vy_set + (-CHASSIS_WZ_SET_SCALE - 1.0f) * MOTOR_DISTANCE_TO_CENTER * wz_set;
 }
-
 
 /**
   * @brief          control loop, according to control set-point, calculate motor current, 

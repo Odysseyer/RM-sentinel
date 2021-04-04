@@ -31,4 +31,5 @@ standard_tpye_c\chassis_behaviour.o: ../Drivers/CMSIS/Include/cmsis_compiler.h
 standard_tpye_c\chassis_behaviour.o: ../Drivers/CMSIS/Include/cmsis_armcc.h
 standard_tpye_c\chassis_behaviour.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 standard_tpye_c\chassis_behaviour.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+standard_tpye_c\chassis_behaviour.o: ../Inc/stm32f4xx_it.h
 standard_tpye_c\chassis_behaviour.o: ..\application\gimbal_behaviour.h

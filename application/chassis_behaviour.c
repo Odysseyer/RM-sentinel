@@ -84,7 +84,7 @@
 #include "cmsis_os.h"
 #include "chassis_task.h"
 #include "arm_math.h"
-
+#include "stm32f4xx_it.h"
 #include "gimbal_behaviour.h"
 
 /**
@@ -238,10 +238,14 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
         return;
     }
 
-
     //remote control  set chassis behaviour mode
-    //遥控器设置模式
-    if (switch_is_mid(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
+    //遥控器设置模式,默认设置为AUTO_MOVE
+    chassis_behaviour_mode = CHASSIS_AUTO;
+
+
+
+
+     if (switch_is_mid(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
     {
         //can change to CHASSIS_ZERO_FORCE,CHASSIS_NO_MOVE,CHASSIS_INFANTRY_FOLLOW_GIMBAL_YAW,
         //CHASSIS_ENGINEER_FOLLOW_CHASSIS_YAW,CHASSIS_NO_FOLLOW_YAW,CHASSIS_OPEN
@@ -253,7 +257,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
     }
     else if (switch_is_up(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
     {
-        chassis_behaviour_mode = CHASSIS_INFANTRY_FOLLOW_GIMBAL_YAW;
+        chassis_behaviour_mode = CHASSIS_AUTO;
     }
 
     //when gimbal in some mode, such as init mode, chassis must's move
@@ -294,6 +298,30 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
     {
         chassis_move_mode->chassis_mode = CHASSIS_VECTOR_RAW;
     }
+    else if (chassis_behaviour_mode == CHASSIS_AUTO)
+    {
+        chassis_move_mode->chassis_mode = CHASSIS_VECTOR_AUTO;
+  // NORMAL_TO_LEFT,
+  // NORMAL_TO_RIGHT,
+  // DECLINE_TO_LEFT,
+  // DECLINE_TO_RIGHT,
+        if (distance_to_left <100 )
+        {
+          chassis_move_mode->chassis_auto_submode = DECLINE_TO_LEFT;
+          // if (distance_to_left <20)
+          // {
+          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_RIGHT;
+          // } 
+        }
+        if(distance_to_right <100)
+        {
+          chassis_move_mode->chassis_auto_submode = DECLINE_TO_RIGHT;
+          // if (distance_to_left <20)
+          // {
+          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_LEFT;
+          // } 
+        }
+    }//breakpoint: use this mode for testing
 }
 
 

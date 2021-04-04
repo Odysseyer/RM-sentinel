@@ -70,7 +70,9 @@ gyro sensor:%s\r\n\
 accel sensor:%s\r\n\
 mag sensor:%s\r\n\
 referee usart:%s\r\n\
-dis233:%x\r\n\
+dis_to_right:%hu\r\n\
+dis_to_left:%hu\r\n\
+flag:%hu\r\n\
 ******************************\r\n",
             get_battery_percentage(), 
             status[error_list_usb_local[DBUS_TOE].error_exist],
@@ -85,7 +87,9 @@ dis233:%x\r\n\
             status[error_list_usb_local[BOARD_ACCEL_TOE].error_exist],
             status[error_list_usb_local[BOARD_MAG_TOE].error_exist],
             status[error_list_usb_local[REFEREE_TOE].error_exist],
-						(GPIOB->IDR)&(0x2000)
+						distance_to_right,
+						distance_to_left,
+						flag
 						);
 
     }

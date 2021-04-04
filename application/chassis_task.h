@@ -138,8 +138,16 @@ typedef enum
   CHASSIS_VECTOR_FOLLOW_CHASSIS_YAW,  //chassis will have yaw angle(chassis_yaw) close-looped control.底盘有底盘角度控制闭环
   CHASSIS_VECTOR_NO_FOLLOW_YAW,       //chassis will have rotation speed control. 底盘有旋转速度控制
   CHASSIS_VECTOR_RAW,                 //control-current will be sent to CAN bus derectly.
-
+  CHASSIS_VECTOR_AUTO
 } chassis_mode_e;
+
+typedef enum
+{
+  NORMAL_TO_LEFT,
+  NORMAL_TO_RIGHT,
+  DECLINE_TO_LEFT,
+  DECLINE_TO_RIGHT
+} chassis_auto_submode_e;
 
 typedef struct
 {
@@ -158,6 +166,7 @@ typedef struct
   const fp32 *chassis_INS_angle;             //the point to the euler angle of gyro sensor.获取陀螺仪解算出的欧拉角指针
   chassis_mode_e chassis_mode;               //state machine. 底盘控制状态机
   chassis_mode_e last_chassis_mode;          //last state machine.底盘上次控制状态机
+  chassis_auto_submode_e chassis_auto_submode;
   chassis_motor_t motor_chassis[4];          //chassis motor data.底盘电机数据
   pid_type_def motor_speed_pid[4];             //motor speed PID.底盘电机速度pid
   pid_type_def chassis_angle_pid;              //follow angle PID.底盘跟随角度pid

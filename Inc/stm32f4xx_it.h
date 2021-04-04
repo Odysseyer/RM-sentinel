@@ -38,7 +38,16 @@
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+ double kalmanFilter(double input);
+ typedef struct 
+{
+    float LastP;//涓婃浼扮畻鍗忔柟宸? 鍒濆鍖栧?间负0.02
+    float Now_P;//褰撳墠浼扮畻鍗忔柟宸? 鍒濆鍖栧?间负0
+    float out;//鍗″皵鏇兼护娉㈠櫒杈撳嚭 鍒濆鍖栧?间负0
+    float Kg;//鍗″皵鏇煎鐩? 鍒濆鍖栧?间负0
+    float Q;//杩囩▼鍣０鍗忔柟宸? 鍒濆鍖栧?间负0.001
+    float R;//瑙傛祴鍣０鍗忔柟宸? 鍒濆鍖栧?间负0.543
+} KFP;//Kalman Filter parameter
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/
@@ -58,6 +67,7 @@ void EXTI0_IRQHandler(void);
 void EXTI1_IRQHandler(void);
 void EXTI3_IRQHandler(void);
 void EXTI4_IRQHandler(void);
+void CAN1_RX0_IRQHandler(void);
 void EXTI9_5_IRQHandler(void);
 void EXTI15_10_IRQHandler(void);
 void TIM6_DAC_IRQHandler(void);
@@ -68,7 +78,9 @@ void OTG_FS_IRQHandler(void);
 void DMA2_Stream6_IRQHandler(void);
 void DMA2_Stream7_IRQHandler(void);
 /* USER CODE BEGIN EFP */
-
+extern unsigned short distance_to_left;
+extern unsigned short distance_to_right;
+extern unsigned short flag;
 /* USER CODE END EFP */
 
 #ifdef __cplusplus
