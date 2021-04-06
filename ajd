@@ -1,0 +1,66 @@
+[33mcommit 781b8fa04241e5b9f0d0e8d58f508998b3b3fbd9[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: yaofen <yaofen99@gmail.com>
+Date:   Sun Apr 4 21:16:41 2021 +0800
+
+    can线调试不出，准备重写了
+
+[33mcommit cb058fc03f23f1cd138da051dbecee4bfa0c143c[m
+Author: yaofen <yaofen99@gmail.com>
+Date:   Tue Mar 30 21:41:13 2021 +0800
+
+    add the ioe-sr05
+
+[33mcommit 5433e7d2bd9430f35c8e006f903fa879dc037b61[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Mar 3 22:17:54 2021 +0800
+
+    移植完成
+
+[33mcommit f71033c41a1695ac272b711a88eb10a9fef6a9e2[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Mar 3 18:21:32 2021 +0800
+
+    超声波传感器装上了
+
+[33mcommit b92547123c807544acdd25eb7269e63ba3cdc985[m
+Merge: 15c56be e0a5c86
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Mar 3 17:12:11 2021 +0800
+
+    Merge branch 'master' of https://github.com/yaofen99/RM-sentinel
+
+[33mcommit 15c56be52efdcd07e596dc55243ec66d623ed167[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Mar 3 17:11:17 2021 +0800
+
+    新增了和上位机的交互
+
+[33mcommit e0a5c86b171df3f879f6e8f6dfc326dda6818c61[m
+Author: yaofen99 <68050840+yaofen99@users.noreply.github.com>
+Date:   Wed Mar 3 16:52:19 2021 +0800
+
+    Delete RoboMaster 竞赛机器人 2020资料附件包 directory
+
+[33mcommit 7350e6f5b395f707b06352b68b6fca8842d9ee5d[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Mar 3 16:47:36 2021 +0800
+
+    修改了云台任务，未修改底盘，去除I2C2和SPI2，配置时钟6,7
+
+[33mcommit c80dea66e6b248461304ca28b115e212ee9f6222[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Thu Feb 25 14:36:42 2021 +0800
+
+    usb模块完成
+
+[33mcommit 363e05bd6de43c436f34076e0248b54427c825f9[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Feb 24 20:26:30 2021 +0800
+
+    目前为止
+
+[33mcommit eaf80522099eecf69c998e10f7704c268ad16645[m
+Author: yaofen <yaofen233@gmail.com>
+Date:   Wed Feb 24 19:26:18 2021 +0800
+
+    云台任务固定为相对角模式
