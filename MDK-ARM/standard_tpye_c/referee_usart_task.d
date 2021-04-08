@@ -69,3 +69,4 @@ standard_tpye_c\referee_usart_task.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string
 standard_tpye_c\referee_usart_task.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 standard_tpye_c\referee_usart_task.o: ..\application\protocol\protocol.h
 standard_tpye_c\referee_usart_task.o: ..\application\referee.h
+standard_tpye_c\referee_usart_task.o: ..\application\usb_task.h

@@ -65,6 +65,8 @@ void init_referee_struct_data(void)
 
 void referee_data_solve(uint8_t *frame)
 {
+    static uint8_t i;
+
     uint16_t cmd_id = 0;
 
     uint8_t index = 0;
@@ -119,6 +121,9 @@ void referee_data_solve(uint8_t *frame)
         case ROBOT_STATE_CMD_ID:
         {
             memcpy(&robot_state, frame + index, sizeof(robot_state));
+            id_packet_to_nano[1] = robot_state.robot_id;
+            for( i =0; i<3 ;i++)
+                printf("%c",id_packet_to_nano[i]);
         }
         break;
         case POWER_HEAT_DATA_CMD_ID:

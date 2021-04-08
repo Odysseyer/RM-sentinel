@@ -4,6 +4,9 @@
 #include "main.h"
 
 #include "protocol.h"
+#include "usb_task.h"
+
+static uint8_t id_packet_to_nano[3]= {0x44,0,0x33};
 
 typedef enum
 {

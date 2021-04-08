@@ -74,5 +74,6 @@ standard_tpye_c\shoot.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 standard_tpye_c\shoot.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 standard_tpye_c\shoot.o: ..\application\referee.h
 standard_tpye_c\shoot.o: ..\application\protocol\protocol.h
+standard_tpye_c\shoot.o: ..\application\usb_task.h
 standard_tpye_c\shoot.o: ..\application\gimbal_behaviour.h
 standard_tpye_c\shoot.o: ..\application\detect_task.h

@@ -850,6 +850,8 @@ static void gimbal_set_control(gimbal_control_t *set_control)
         //enconde模式下，电机编码角度控制
         gimbal_relative_angle_limit(&set_control->gimbal_pitch_motor, add_pitch_angle);
     }
+
+    
 }
 /**
   * @brief          gimbal control mode :GIMBAL_MOTOR_GYRO, use euler angle calculated by gyro sensor to control. 

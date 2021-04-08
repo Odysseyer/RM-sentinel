@@ -85,6 +85,7 @@
 #include "detect_task.h"
 
 #include "user_lib.h"
+#include "usbd_cdc_if.h"
 
 //when gimbal is in calibrating, set buzzer frequency and strenght
 //当云台在校准, 设置蜂鸣器频率和强度
@@ -255,6 +256,9 @@ static void gimbal_absolute_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control
   */
 static void gimbal_relative_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_control_set);
 
+
+
+static void gimbal_auto_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_control_set);
 /**
   * @brief          when gimbal behaviour mode is GIMBAL_MOTIONLESS, the function is called
   *                 and gimbal control mode is encode mode. 
@@ -298,6 +302,7 @@ void gimbal_behaviour_mode_set(gimbal_control_t *gimbal_mode_set)
     //云台行为状态机设置
     gimbal_behavour_set(gimbal_mode_set);
 
+
     //accoring to gimbal_behaviour, set motor control mode
     //根据云台行为状态机设置电机状态机
     if (gimbal_behaviour == GIMBAL_ZERO_FORCE)
@@ -315,7 +320,7 @@ void gimbal_behaviour_mode_set(gimbal_control_t *gimbal_mode_set)
         gimbal_mode_set->gimbal_yaw_motor.gimbal_motor_mode = GIMBAL_MOTOR_RAW;
         gimbal_mode_set->gimbal_pitch_motor.gimbal_motor_mode = GIMBAL_MOTOR_RAW;
     }
-    else if (gimbal_behaviour == GIMBAL_ABSOLUTE_ANGLE)
+    else if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
     {
         gimbal_mode_set->gimbal_yaw_motor.gimbal_motor_mode = GIMBAL_MOTOR_GYRO;
         gimbal_mode_set->gimbal_pitch_motor.gimbal_motor_mode = GIMBAL_MOTOR_GYRO;
@@ -368,9 +373,9 @@ void gimbal_behaviour_control_set(fp32 *add_yaw, fp32 *add_pitch, gimbal_control
     {
         gimbal_cali_control(add_yaw, add_pitch, gimbal_control_set);
     }
-    else if (gimbal_behaviour == GIMBAL_ABSOLUTE_ANGLE)
+    else if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
     {
-        gimbal_absolute_angle_control(add_yaw, add_pitch, gimbal_control_set);
+        gimbal_auto_angle_control(add_yaw, add_pitch, gimbal_control_set);
     }
     else if (gimbal_behaviour == GIMBAL_RELATIVE_ANGLE)
     {
@@ -510,7 +515,7 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
     }
     else if (switch_is_up(gimbal_mode_set->gimbal_rc_ctrl->rc.s[GIMBAL_MODE_CHANNEL]))
     {
-        gimbal_behaviour = GIMBAL_ABSOLUTE_ANGLE;
+        gimbal_behaviour = GIMBAL_AUTO_SHOOT;
     }
 
     if( toe_is_error(DBUS_TOE))
@@ -528,7 +533,6 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
         }
         last_gimbal_behaviour = gimbal_behaviour;
     }
-
 
 
 }
@@ -768,6 +772,45 @@ static void gimbal_relative_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control
 
 
 }
+
+
+
+static void gimbal_auto_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_control_set)
+{
+    // if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
+    // {
+    //     return;
+    // }
+    // static int16_t yaw_channel = 0, pitch_channel = 0;
+
+    // rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->rc.ch[YAW_CHANNEL], yaw_channel, RC_DEADBAND);
+    // rc_deadband_limit(gimbal_control_set->gimbal_rc_ctrl->rc.ch[PITCH_CHANNEL], pitch_channel, RC_DEADBAND);
+
+    // *yaw = yaw_channel * YAW_RC_SEN - gimbal_control_set->gimbal_rc_ctrl->mouse.x * YAW_MOUSE_SEN;
+    // *pitch = pitch_channel * PITCH_RC_SEN + gimbal_control_set->gimbal_rc_ctrl->mouse.y * PITCH_MOUSE_SEN;
+  const fp32 YAW_FIX_RIGHT = 0.477464829275686;
+  const fp32 YAW_FIX_LEFT = 1.81436635124761;
+  const fp32 PITCH_FIX = 1;
+  const fp32 ANGLE_FIX_SET = atan(7 / 4);
+  const fp32 CAMERA_ANGLE = sqrt(2)/2;
+  
+  fp32 x=latest_data.t_x;
+  fp32 y=latest_data.t_y*CAMERA_ANGLE+latest_data.t_z*CAMERA_ANGLE;
+  fp32 z=(-latest_data.t_y+latest_data.t_z)*CAMERA_ANGLE; //摄像头有倾斜角45°,对坐标进行纠正
+
+  if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
+  {
+    return;
+  }
+  if (atan(x / z) > 0)
+    *yaw = 2.1 + YAW_FIX_RIGHT * atan(x / z);
+  else
+    *yaw = 2.1 + YAW_FIX_LEFT * atan(x / z);
+  *pitch = -0.7 + (acos((260 - 8 * y + 14 * z) / sqrt(260) / sqrt((y - 8) * (y - 8) + (z + 14) * (z + 14))) + ANGLE_FIX_SET - 3.14159 / 2) * PITCH_FIX;
+
+
+}
+
 
 /**
   * @brief          when gimbal behaviour mode is GIMBAL_MOTIONLESS, the function is called

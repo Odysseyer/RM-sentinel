@@ -240,10 +240,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
 
     //remote control  set chassis behaviour mode
     //遥控器设置模式,默认设置为AUTO_MOVE
-    chassis_behaviour_mode = CHASSIS_AUTO;
-
-
-
+    chassis_behaviour_mode = CHASSIS_NO_MOVE;
 
      if (switch_is_mid(chassis_move_mode->chassis_RC->rc.s[CHASSIS_MODE_CHANNEL]))
     {
@@ -259,6 +256,10 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
     {
         chassis_behaviour_mode = CHASSIS_AUTO;
     }
+    // else if (chassis_move_mode->chassis_RC== NULL )
+    // {
+    //     chassis_behaviour_mode = CHASSIS_NO_MOVE;
+    // }
 
     //when gimbal in some mode, such as init mode, chassis must's move
     //当云台在某些模式下，像初始化， 底盘不动
@@ -267,6 +268,27 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
         chassis_behaviour_mode = CHASSIS_NO_MOVE;
     }
 
+
+  // NORMAL_TO_LEFT,
+  // NORMAL_TO_RIGHT,
+  // DECLINE_TO_LEFT,
+  // DECLINE_TO_RIGHT,
+        if (distance_to_left <200 )
+        {
+          chassis_move_mode->chassis_auto_submode = MOVE_TO_LEFT;
+          // if (distance_to_left <20)
+          // {
+          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_RIGHT;
+          // } 
+        }
+        if(distance_to_right <200)
+        {
+          chassis_move_mode->chassis_auto_submode = MOVE_TO_RIGHT;
+          // if (distance_to_left <20)
+          // {
+          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_LEFT;
+          // } 
+        }
 
     //add your own logic to enter the new mode
     //添加自己的逻辑判断进入新模式
@@ -301,26 +323,8 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
     else if (chassis_behaviour_mode == CHASSIS_AUTO)
     {
         chassis_move_mode->chassis_mode = CHASSIS_VECTOR_AUTO;
-  // NORMAL_TO_LEFT,
-  // NORMAL_TO_RIGHT,
-  // DECLINE_TO_LEFT,
-  // DECLINE_TO_RIGHT,
-        if (distance_to_left <100 )
-        {
-          chassis_move_mode->chassis_auto_submode = DECLINE_TO_LEFT;
-          // if (distance_to_left <20)
-          // {
-          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_RIGHT;
-          // } 
-        }
-        if(distance_to_right <100)
-        {
-          chassis_move_mode->chassis_auto_submode = DECLINE_TO_RIGHT;
-          // if (distance_to_left <20)
-          // {
-          //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_LEFT;
-          // } 
-        }
+//        chassis_move_mode->chassis_mode = CHASSIS_VECTOR_FOLLOW_CHASSIS_YAW;
+
     }//breakpoint: use this mode for testing
 }
 

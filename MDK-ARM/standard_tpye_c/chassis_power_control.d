@@ -55,6 +55,7 @@ standard_tpye_c\chassis_power_control.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm
 standard_tpye_c\chassis_power_control.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 standard_tpye_c\chassis_power_control.o: ..\application\referee.h
 standard_tpye_c\chassis_power_control.o: ..\application\protocol\protocol.h
+standard_tpye_c\chassis_power_control.o: ..\application\usb_task.h
 standard_tpye_c\chassis_power_control.o: ..\components\algorithm\Include\arm_math.h
 standard_tpye_c\chassis_power_control.o: ../Drivers/CMSIS/Include/core_cm4.h
 standard_tpye_c\chassis_power_control.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

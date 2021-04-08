@@ -47,6 +47,7 @@ standard_tpye_c\referee.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_ll_usb.
 standard_tpye_c\referee.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pcd_ex.h
 standard_tpye_c\referee.o: ..\application\protocol\protocol.h
 standard_tpye_c\referee.o: ..\application\struct_typedef.h
+standard_tpye_c\referee.o: ..\application\usb_task.h
 standard_tpye_c\referee.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 standard_tpye_c\referee.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 standard_tpye_c\referee.o: ..\components\support\CRC8_CRC16.h
