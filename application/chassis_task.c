@@ -522,7 +522,7 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
         chassis_move_control->chassis_cmd_slow_set_vx.out = 0.0f;
         chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
     }
-    else if (chassis_move_control->chassis_mode == CHASSIS_VECTOR_RAW)
+    else if (chassis_move_control->chassis_mode == CHASSIS_AUTO)
     {
         //in auto mode
         //在自动模式

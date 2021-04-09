@@ -3,7 +3,7 @@
 <title>Static Call Graph - [standard_tpye_c\standard_tpye_c.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image standard_tpye_c\standard_tpye_c.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Apr 09 11:28:23 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Apr 09 12:08:06 2021
 <BR><P>
 <H3>Maximum Stack Usage =        512 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -4610,7 +4610,7 @@ Global Symbols
 <LI><a href="#[2d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_cali_control
 <LI><a href="#[2d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_auto_angle_control
 </UL>
-<BR>[Called By]<UL><LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
+<BR>[Called By]<UL><LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
 </UL>
 
 <P><STRONG><a name="[2da]"></a>gimbal_behaviour_mode_set</STRONG> (Thumb, 134 bytes, Stack size 8 bytes, gimbal_behaviour.o(i.gimbal_behaviour_mode_set))
@@ -4639,7 +4639,7 @@ Global Symbols
 <LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
 <LI><a href="#[2ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_control_loop
 <LI><a href="#[2ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_mode
-<LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
+<LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
 <LI><a href="#[2ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_mode_change_control_transit
 <LI><a href="#[2e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init
 <LI><a href="#[2e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_feedback_update
@@ -5640,6 +5640,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_behavour_set
 <LI><a href="#[33f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trigger_motor_turn_back
+<LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_yaw
+<LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_pitch
 </UL>
 
 <P><STRONG><a name="[372]"></a>_dcmple</STRONG> (Thumb, 120 bytes, Stack size 32 bytes, dleqf.o(x$fpl$dleqf), UNUSED)
@@ -5709,6 +5711,8 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_init_control
 <LI><a href="#[2d2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_auto_angle_control
+<LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_yaw
+<LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_pitch
 </UL>
 
 <P><STRONG><a name="[376]"></a>_drcmple</STRONG> (Thumb, 98 bytes, Stack size 16 bytes, drleqf.o(x$fpl$drleqf), UNUSED)
@@ -5804,6 +5808,8 @@ Global Symbols
 <LI><a href="#[2af]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_control_loop
 <LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_power_control
 <LI><a href="#[33f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;trigger_motor_turn_back
+<LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_yaw
+<LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_pitch
 </UL>
 
 <P><STRONG><a name="[37f]"></a>_f2d</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -6870,19 +6876,31 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[2dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_control_loop
 </UL>
 
-<P><STRONG><a name="[2eb]"></a>gimbal_relative_angle_limit_pitch</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, gimbal_task.o(i.gimbal_relative_angle_limit_pitch))
-<BR><BR>[Called By]<UL><LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
+<P><STRONG><a name="[2e9]"></a>gimbal_relative_angle_limit_pitch</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, gimbal_task.o(i.gimbal_relative_angle_limit_pitch))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = gimbal_relative_angle_limit_pitch &rArr; __aeabi_cdcmple
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[2d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
+<LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
 </UL>
 
-<P><STRONG><a name="[2ea]"></a>gimbal_relative_angle_limit_yaw</STRONG> (Thumb, 88 bytes, Stack size 0 bytes, gimbal_task.o(i.gimbal_relative_angle_limit_yaw))
-<BR><BR>[Called By]<UL><LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
+<P><STRONG><a name="[2ea]"></a>gimbal_relative_angle_limit_yaw</STRONG> (Thumb, 132 bytes, Stack size 24 bytes, gimbal_task.o(i.gimbal_relative_angle_limit_yaw))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = gimbal_relative_angle_limit_yaw &rArr; __aeabi_cdcmple
+</UL>
+<BR>[Calls]<UL><LI><a href="#[2b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
+<LI><a href="#[2d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdrcmple
+<LI><a href="#[2dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_cdcmple
+</UL>
+<BR>[Called By]<UL><LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_set_control
 </UL>
 
-<P><STRONG><a name="[2e9]"></a>gimbal_set_control</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, gimbal_task.o(i.gimbal_set_control))
+<P><STRONG><a name="[2eb]"></a>gimbal_set_control</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, gimbal_task.o(i.gimbal_set_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 440<LI>Call Chain = gimbal_set_control &rArr; gimbal_behaviour_control_set &rArr; gimbal_auto_angle_control &rArr; __hardfp_acos &rArr; sqrt &rArr; _dsqrt &rArr; __fpl_dnaninf &rArr; __dunder_d &rArr; _fp_trapveneer &rArr; _fp_trap &rArr; __rt_SIGFPE &rArr; __rt_SIGFPE_inner &rArr; __default_signal_display &rArr; _ttywrch
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_yaw
-<LI><a href="#[2eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_pitch
+<LI><a href="#[2e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_relative_angle_limit_pitch
 <LI><a href="#[2d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_behaviour_control_set
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_task
