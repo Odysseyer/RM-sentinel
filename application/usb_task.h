@@ -18,7 +18,7 @@
 #define USB_TASK_H
 #include "struct_typedef.h"
 
-
+extern void usb_printf(const char *fmt,...);
 
 
 extern void usb_task(void const * argument);

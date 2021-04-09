@@ -4,6 +4,7 @@
 #include "CRC8_CRC16.h"
 #include "protocol.h"
 
+#include "usb_task.h"
 
 frame_header_struct_t referee_receive_header;
 frame_header_struct_t referee_send_header;
@@ -123,7 +124,7 @@ void referee_data_solve(uint8_t *frame)
             memcpy(&robot_state, frame + index, sizeof(robot_state));
             id_packet_to_nano[1] = robot_state.robot_id;
             for( i =0; i<3 ;i++)
-                printf("%c",id_packet_to_nano[i]);
+                usb_printf("%c",id_packet_to_nano[i]);
         }
         break;
         case POWER_HEAT_DATA_CMD_ID:
