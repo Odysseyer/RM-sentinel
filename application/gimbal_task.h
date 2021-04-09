@@ -193,6 +193,10 @@ typedef struct
     gimbal_motor_mode_e gimbal_motor_mode;
     gimbal_motor_mode_e last_gimbal_motor_mode;
     uint16_t offset_ecd;
+    // fp32 max_relative_encoding; //rad
+    // fp32 min_relative_encoding; //rad
+    //note Ï¹Ð´µÄ£¬²å¸öÑÛ
+
     fp32 max_relative_angle; //rad
     fp32 min_relative_angle; //rad
 

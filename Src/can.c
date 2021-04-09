@@ -28,6 +28,8 @@ CAN_HandleTypeDef hcan1;
 CAN_HandleTypeDef hcan2;
 
 /* CAN1 init function */
+/* USER CODE BEGIN 0 */
+
 void MX_CAN1_Init(void)
 {
 
@@ -49,6 +51,7 @@ void MX_CAN1_Init(void)
   }
 
 }
+/* USER CODE END 0 */
 /* CAN2 init function */
 void MX_CAN2_Init(void)
 {

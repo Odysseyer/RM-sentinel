@@ -94,6 +94,11 @@ typedef enum
   GIMBAL_AUTO_SHOOT     
 } gimbal_behaviour_e;
 
+#define MAX_YAW_RAD -1.5
+#define MIN_YAW_RAD -2.7
+#define MAX_PITCH_RAD 1.0
+#define MIN_PITCH_RAD 1.85
+
 /**
   * @brief          the function is called by gimbal_set_mode function in gimbal_task.c
   *                 the function set gimbal_behaviour variable, and set motor mode.
@@ -149,5 +154,7 @@ extern bool_t gimbal_cmd_to_chassis_stop(void);
   * @retval         1: no move 0:normal
   */
 extern bool_t gimbal_cmd_to_shoot_stop(void);
+
+extern gimbal_behaviour_e gimbal_behaviour;
 
 #endif
