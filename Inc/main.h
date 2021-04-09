@@ -61,9 +61,13 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define BUTTON_TRIG_Pin GPIO_PIN_7
 #define BUTTON_TRIG_GPIO_Port GPIOI
+#define MI_SWITCH_RIGHT_Pin GPIO_PIN_6
+#define MI_SWITCH_RIGHT_GPIO_Port GPIOI
 #define DISTANCE2_Pin GPIO_PIN_1
 #define DISTANCE2_GPIO_Port GPIOF
 #define DISTANCE2_EXTI_IRQn EXTI1_IRQn
+#define MI_SWITCH_LEFT_Pin GPIO_PIN_6
+#define MI_SWITCH_LEFT_GPIO_Port GPIOC
 #define RSTN_IST8310_Pin GPIO_PIN_6
 #define RSTN_IST8310_GPIO_Port GPIOG
 #define LED_R_Pin GPIO_PIN_12
