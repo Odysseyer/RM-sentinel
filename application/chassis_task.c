@@ -242,6 +242,7 @@ static void chassis_init(chassis_move_t *chassis_move_init)
     chassis_move_init->chassis_yaw_motor = get_yaw_motor_point();
     chassis_move_init->chassis_pitch_motor = get_pitch_motor_point();
     
+    chassis_move.chassis_auto_submode = MOVE_TO_LEFT;
     //get chassis motor data point,  initialize motor speed PID
     //获取底盘电机数据指针，初始化PID 
     for (i = 0; i < 4; i++)
@@ -522,7 +523,7 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
         chassis_move_control->chassis_cmd_slow_set_vx.out = 0.0f;
         chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
     }
-    else if (chassis_move_control->chassis_mode == CHASSIS_AUTO)
+    else if (chassis_move_control->chassis_mode == CHASSIS_VECTOR_AUTO)
     {
         //in auto mode
         //在自动模式
@@ -533,13 +534,15 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
         chassis_move_control->chassis_cmd_slow_set_vy.out = 0.0f;
 
 //BREAKPOINT: AUTO MODE TO MOTOR SET
-        if(chassis_move_control->chassis_auto_submode == NORMAL_TO_LEFT)
+        if(chassis_move_control->chassis_auto_submode == MOVE_TO_LEFT)
         {
-          chassis_move_control->vx_set = 5;
+          //chassis_move_control->vx_set = -3;
+          chassis_move_control->vx_set = 0;
         }
-        else if(chassis_move_control->chassis_auto_submode == NORMAL_TO_RIGHT)
+        else if(chassis_move_control->chassis_auto_submode == MOVE_TO_RIGHT)
         {
-          chassis_move_control->vx_set = -5;
+         // chassis_move_control->vx_set = 3;
+          chassis_move_control->vx_set = 0;
         }
         // else if(chassis_move_control->chassis_auto_submode == DECLINE_TO_LEFT)
         // {

@@ -61,3 +61,10 @@ standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/inclu
 standard_tpye_c\stm32f4xx_it.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 standard_tpye_c\stm32f4xx_it.o: ..\bsp\boards\bsp_buzzer.h
 standard_tpye_c\stm32f4xx_it.o: ..\application\struct_typedef.h
+standard_tpye_c\stm32f4xx_it.o: ..\application\chassis_task.h
+standard_tpye_c\stm32f4xx_it.o: ..\application\CAN_receive.h
+standard_tpye_c\stm32f4xx_it.o: ..\application\gimbal_task.h
+standard_tpye_c\stm32f4xx_it.o: ..\components\controller\pid.h
+standard_tpye_c\stm32f4xx_it.o: ..\application\remote_control.h
+standard_tpye_c\stm32f4xx_it.o: ..\bsp\boards\bsp_rc.h
+standard_tpye_c\stm32f4xx_it.o: ..\components\algorithm\user_lib.h

@@ -340,7 +340,7 @@ static void shoot_feedback_update(void)
     //计算输出轴角度
     shoot_control.angle = (shoot_control.ecd_count * ECD_RANGE + shoot_control.shoot_motor_measure->ecd) * MOTOR_ECD_TO_ANGLE;
     //微动开关
-    shoot_control.key = BUTTEN_TRIG_PIN;
+//    shoot_control.key = BUTTEN_TRIG_PIN;
     //鼠标按键
     shoot_control.last_press_l = shoot_control.press_l;
     shoot_control.last_press_r = shoot_control.press_r;

@@ -3,7 +3,7 @@
 <title>Static Call Graph - [standard_tpye_c\standard_tpye_c.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image standard_tpye_c\standard_tpye_c.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Fri Apr 09 16:22:27 2021
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060960: Last Updated: Mon Apr 12 19:14:31 2021
 <BR><P>
 <H3>Maximum Stack Usage =        512 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1703,14 +1703,10 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f407xx.o(RESET)
 </UL>
-<P><STRONG><a name="[52]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 136 bytes, Stack size 24 bytes, stm32f4xx_it.o(i.EXTI15_10_IRQHandler))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = EXTI15_10_IRQHandler &rArr; kalmanFilter &rArr; __aeabi_dmul
+<P><STRONG><a name="[52]"></a>EXTI15_10_IRQHandler</STRONG> (Thumb, 52 bytes, Stack size 8 bytes, stm32f4xx_it.o(i.EXTI15_10_IRQHandler))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = EXTI15_10_IRQHandler &rArr; HAL_GPIO_EXTI_IRQHandler &rArr; HAL_GPIO_EXTI_Callback &rArr; vTaskNotifyGiveFromISR &rArr; vPortValidateInterruptPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_TIM_Base_Start_IT
-<LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_EXTI_IRQHandler
-<LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;kalmanFilter
-<LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2d
-<LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2uiz
+<BR>[Calls]<UL><LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_EXTI_IRQHandler
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f407xx.o(RESET)
 </UL>
@@ -2090,9 +2086,8 @@ Global Symbols
 <LI><a href="#[179]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_MspInit
 </UL>
 
-<P><STRONG><a name="[347]"></a>HAL_GPIO_ReadPin</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_ReadPin))
+<P><STRONG><a name="[34b]"></a>HAL_GPIO_ReadPin</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_ReadPin))
 <BR><BR>[Called By]<UL><LI><a href="#[8d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usb_task
-<LI><a href="#[341]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_feedback_update
 </UL>
 
 <P><STRONG><a name="[120]"></a>HAL_GPIO_WritePin</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin))
@@ -2669,7 +2664,6 @@ Global Symbols
 
 <P><STRONG><a name="[144]"></a>HAL_TIM_Base_Start_IT</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_Base_Start_IT))
 <BR><BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI1_IRQHandler
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
 <P><STRONG><a name="[247]"></a>HAL_TIM_Base_Stop_IT</STRONG> (Thumb, 56 bytes, Stack size 0 bytes, stm32f4xx_hal_tim.o(i.HAL_TIM_Base_Stop_IT))
@@ -2935,7 +2929,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[217]"></a>MX_GPIO_Init</STRONG> (Thumb, 738 bytes, Stack size 32 bytes, gpio.o(i.MX_GPIO_Init))
+<P><STRONG><a name="[217]"></a>MX_GPIO_Init</STRONG> (Thumb, 648 bytes, Stack size 32 bytes, gpio.o(i.MX_GPIO_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = MX_GPIO_Init &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[161]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
@@ -3005,7 +2999,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[c4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[21e]"></a>MX_TIM1_Init</STRONG> (Thumb, 258 bytes, Stack size 88 bytes, tim.o(i.MX_TIM1_Init))
+<P><STRONG><a name="[21e]"></a>MX_TIM1_Init</STRONG> (Thumb, 226 bytes, Stack size 88 bytes, tim.o(i.MX_TIM1_Init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = MX_TIM1_Init &rArr; HAL_TIM_Base_Init &rArr; HAL_TIM_Base_MspInit &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Error_Handler
@@ -4310,7 +4304,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[2c3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_set_contorl
 </UL>
 
-<P><STRONG><a name="[2ad]"></a>chassis_behaviour_mode_set</STRONG> (Thumb, 192 bytes, Stack size 8 bytes, chassis_behaviour.o(i.chassis_behaviour_mode_set))
+<P><STRONG><a name="[2ad]"></a>chassis_behaviour_mode_set</STRONG> (Thumb, 168 bytes, Stack size 8 bytes, chassis_behaviour.o(i.chassis_behaviour_mode_set))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = chassis_behaviour_mode_set
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_cmd_to_chassis_stop
@@ -4565,7 +4559,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_power_control
 </UL>
 
-<P><STRONG><a name="[34a]"></a>get_shoot_heat0_limit_and_heat0</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, referee.o(i.get_shoot_heat0_limit_and_heat0))
+<P><STRONG><a name="[349]"></a>get_shoot_heat0_limit_and_heat0</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, referee.o(i.get_shoot_heat0_limit_and_heat0))
 <BR><BR>[Called By]<UL><LI><a href="#[340]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_set_mode
 </UL>
 
@@ -4578,7 +4572,7 @@ Global Symbols
 <LI><a href="#[23e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RC_cmd_to_calibrate
 </UL>
 
-<P><STRONG><a name="[348]"></a>get_trigger_motor_measure_point</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, can_receive.o(i.get_trigger_motor_measure_point))
+<P><STRONG><a name="[347]"></a>get_trigger_motor_measure_point</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, can_receive.o(i.get_trigger_motor_measure_point))
 <BR><BR>[Called By]<UL><LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
 </UL>
 
@@ -4615,7 +4609,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_behaviour_mode_set
 </UL>
 
-<P><STRONG><a name="[34b]"></a>gimbal_cmd_to_shoot_stop</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, gimbal_behaviour.o(i.gimbal_cmd_to_shoot_stop))
+<P><STRONG><a name="[34a]"></a>gimbal_cmd_to_shoot_stop</STRONG> (Thumb, 30 bytes, Stack size 0 bytes, gimbal_behaviour.o(i.gimbal_cmd_to_shoot_stop))
 <BR><BR>[Called By]<UL><LI><a href="#[340]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_set_mode
 </UL>
 
@@ -4733,7 +4727,6 @@ Global Symbols
 <LI><a href="#[2b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_d2f
 </UL>
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI1_IRQHandler
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
 <P><STRONG><a name="[342]"></a>laser_off</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, bsp_laser.o(i.laser_off))
@@ -4895,7 +4888,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_control_loop
 </UL>
 
-<P><STRONG><a name="[349]"></a>ramp_init</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, user_lib.o(i.ramp_init))
+<P><STRONG><a name="[348]"></a>ramp_init</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, user_lib.o(i.ramp_init))
 <BR><BR>[Called By]<UL><LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
 </UL>
 
@@ -4973,12 +4966,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[2ed]"></a>shoot_init</STRONG> (Thumb, 176 bytes, Stack size 8 bytes, shoot.o(i.shoot_init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = shoot_init &rArr; shoot_feedback_update
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = shoot_init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[204]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_init
-<LI><a href="#[348]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_trigger_motor_measure_point
+<LI><a href="#[347]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_trigger_motor_measure_point
 <LI><a href="#[2a1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_remote_control_point
-<LI><a href="#[349]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ramp_init
+<LI><a href="#[348]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ramp_init
 <LI><a href="#[341]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_feedback_update
 </UL>
 <BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_task
@@ -5059,7 +5052,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[22a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USB_DEVICE_Init
-<LI><a href="#[347]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
+<LI><a href="#[34b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 <LI><a href="#[301]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_error_list_point
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> freertos.o(.constdata)
@@ -5606,7 +5599,6 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = __aeabi_d2uiz
 </UL>
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI1_IRQHandler
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
 <P><STRONG><a name="[371]"></a>_dfixu</STRONG> (Thumb, 212 bytes, Stack size 40 bytes, dfixu.o(x$fpl$dfixu), UNUSED)
@@ -5620,7 +5612,6 @@ Global Symbols
 
 <P><STRONG><a name="[145]"></a>__aeabi_ui2d</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu))
 <BR><BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI1_IRQHandler
-<LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;EXTI15_10_IRQHandler
 </UL>
 
 <P><STRONG><a name="[3c8]"></a>_dfltu</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, dflt_clz.o(x$fpl$dfltu), UNUSED)
@@ -6666,7 +6657,7 @@ Local Symbols
 <LI><a href="#[2b9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;chassis_init
 </UL>
 
-<P><STRONG><a name="[2b9]"></a>chassis_init</STRONG> (Thumb, 182 bytes, Stack size 16 bytes, chassis_task.o(i.chassis_init))
+<P><STRONG><a name="[2b9]"></a>chassis_init</STRONG> (Thumb, 188 bytes, Stack size 16 bytes, chassis_task.o(i.chassis_init))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = chassis_init &rArr; chassis_feedback_update
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_yaw_motor_point
@@ -6735,7 +6726,7 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[2d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_behaviour_control_set
 </UL>
 
-<P><STRONG><a name="[2db]"></a>gimbal_behavour_set</STRONG> (Thumb, 388 bytes, Stack size 24 bytes, gimbal_behaviour.o(i.gimbal_behavour_set))
+<P><STRONG><a name="[2db]"></a>gimbal_behavour_set</STRONG> (Thumb, 362 bytes, Stack size 24 bytes, gimbal_behaviour.o(i.gimbal_behavour_set))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = gimbal_behavour_set &rArr; __aeabi_cdcmple
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;toe_is_error
@@ -6857,7 +6848,7 @@ Local Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[2dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_control_loop
 </UL>
 
-<P><STRONG><a name="[2e0]"></a>gimbal_motor_relative_angle_control</STRONG> (Thumb, 94 bytes, Stack size 8 bytes, gimbal_task.o(i.gimbal_motor_relative_angle_control))
+<P><STRONG><a name="[2e0]"></a>gimbal_motor_relative_angle_control</STRONG> (Thumb, 86 bytes, Stack size 8 bytes, gimbal_task.o(i.gimbal_motor_relative_angle_control))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = gimbal_motor_relative_angle_control &rArr; gimbal_PID_calc
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PID_calc
@@ -6961,12 +6952,8 @@ Local Symbols
 <BR>[Called By]<UL><LI><a href="#[2ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_control_loop
 </UL>
 
-<P><STRONG><a name="[341]"></a>shoot_feedback_update</STRONG> (Thumb, 538 bytes, Stack size 8 bytes, shoot.o(i.shoot_feedback_update))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = shoot_feedback_update
-</UL>
-<BR>[Calls]<UL><LI><a href="#[347]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
-</UL>
-<BR>[Called By]<UL><LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
+<P><STRONG><a name="[341]"></a>shoot_feedback_update</STRONG> (Thumb, 522 bytes, Stack size 0 bytes, shoot.o(i.shoot_feedback_update))
+<BR><BR>[Called By]<UL><LI><a href="#[2ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_init
 <LI><a href="#[2ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_control_loop
 </UL>
 
@@ -6974,8 +6961,8 @@ Local Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = shoot_set_mode
 </UL>
 <BR>[Calls]<UL><LI><a href="#[2c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;toe_is_error
-<LI><a href="#[34a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_shoot_heat0_limit_and_heat0
-<LI><a href="#[34b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_cmd_to_shoot_stop
+<LI><a href="#[349]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_shoot_heat0_limit_and_heat0
+<LI><a href="#[34a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;gimbal_cmd_to_shoot_stop
 </UL>
 <BR>[Called By]<UL><LI><a href="#[2ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shoot_control_loop
 </UL>

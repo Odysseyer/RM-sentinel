@@ -276,7 +276,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
   // DECLINE_TO_RIGHT,
         if (distance_to_left <200 )
         {
-          chassis_move_mode->chassis_auto_submode = MOVE_TO_LEFT;
+         // chassis_move_mode->chassis_auto_submode = MOVE_TO_LEFT;
           // if (distance_to_left <20)
           // {
           //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_RIGHT;
@@ -284,7 +284,7 @@ void chassis_behaviour_mode_set(chassis_move_t *chassis_move_mode)
         }
         if(distance_to_right <200)
         {
-          chassis_move_mode->chassis_auto_submode = MOVE_TO_RIGHT;
+          //chassis_move_mode->chassis_auto_submode = MOVE_TO_RIGHT;
           // if (distance_to_left <20)
           // {
           //   chassis_move_mode->chassis_auto_submode = NORMAL_TO_LEFT;

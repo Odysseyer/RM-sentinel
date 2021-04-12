@@ -143,10 +143,10 @@ typedef enum
 
 typedef enum
 {
-  NORMAL_TO_LEFT,
-  NORMAL_TO_RIGHT,
-  DECLINE_TO_LEFT,
-  DECLINE_TO_RIGHT,
+  // NORMAL_TO_LEFT,
+  // NORMAL_TO_RIGHT,
+  // DECLINE_TO_LEFT,
+  // DECLINE_TO_RIGHT,
   MOVE_TO_RIGHT,
   MOVE_TO_LEFT
 } chassis_auto_submode_e;
@@ -196,6 +196,7 @@ typedef struct
 
 } chassis_move_t;
 
+extern chassis_move_t chassis_move;
 /**
   * @brief          chassis task, osDelay CHASSIS_CONTROL_TIME_MS (2ms) 
   * @param[in]      pvParameters: null

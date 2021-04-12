@@ -54,6 +54,7 @@
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 #include "bsp_buzzer.h"
+#include "chassis_task.h"
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
@@ -330,7 +331,8 @@ void EXTI9_5_IRQHandler(void)
   /* USER CODE END EXTI9_5_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_5);
   /* USER CODE BEGIN EXTI9_5_IRQn 1 */
-
+//  if ((GPIOI->IDR & 0x80) == 0)
+//    chassis_move.chassis_auto_submode = MOVE_TO_LEFT;
   /* USER CODE END EXTI9_5_IRQn 1 */
 }
 
@@ -343,32 +345,37 @@ void EXTI15_10_IRQHandler(void)
 
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+	if ((GPIOE->IDR & 0x2000)==0)
+    chassis_move.chassis_auto_submode = MOVE_TO_RIGHT;
+	if ((GPIOE->IDR & 0x4000)==0)
+    chassis_move.chassis_auto_submode = MOVE_TO_LEFT;
 //	buzzer_on(31, 20000);
-	if((OI_RXD6)==0)
-		{	//buzzer_on(31, 20000);
-			if(recvStat6 == COM_STOP_BIT)
-			{
-				recvStat6 = COM_START_BIT;
-				HAL_TIM_Base_Start_IT(&htim6);
-				//buzzer_on(31, 20000);
-			}
-		}
-			if(USART_buf6[0]!=0xff)
-		{
-			len6 = 0;
-//			for(int i = 0; i<5 ;i++ ){
-//				USART_buf6[i] = 0;
+//	if((OI_RXD6)==0)
+//		{	//buzzer_on(31, 20000);
+//			if(recvStat6 == COM_STOP_BIT)
+//			{
+//				recvStat6 = COM_START_BIT;
+//				HAL_TIM_Base_Start_IT(&htim6);
+//				//buzzer_on(31, 20000);
 //			}
-		}
-		
-		if (len6 == 4)
-		{
-			distance_to_right = USART_buf6[1]*256 + USART_buf6[2];
-      distance_to_right = (uint16_t)kalmanFilter((double)distance_to_right);
-			len6 = 0 ;
-			//buzzer_on(31, 20000);
-		}
+//		}
+//			if(USART_buf6[0]!=0xff)
+//		{
+//			len6 = 0;
+////			for(int i = 0; i<5 ;i++ ){
+////				USART_buf6[i] = 0;
+////			}
+//		}
+//		
+//		if (len6 == 4)
+//		{
+//			distance_to_right = USART_buf6[1]*256 + USART_buf6[2];
+//      distance_to_right = (uint16_t)kalmanFilter((double)distance_to_right);
+//			len6 = 0 ;
+//			//buzzer_on(31, 20000);
+//		}
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
 

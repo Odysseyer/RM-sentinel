@@ -302,7 +302,7 @@ void gimbal_behaviour_mode_set(gimbal_control_t *gimbal_mode_set)
     //云台行为状态机设置
     gimbal_behavour_set(gimbal_mode_set);
 
-
+//gimbal_behaviour =GIMBAL_ZERO_FORCE;
     //accoring to gimbal_behaviour, set motor control mode
     //根据云台行为状态机设置电机状态机
     if (gimbal_behaviour == GIMBAL_ZERO_FORCE)
@@ -525,14 +525,14 @@ static void gimbal_behavour_set(gimbal_control_t *gimbal_mode_set)
 
     //enter init mode
     //判断进入init状态机
-    {
-        static gimbal_behaviour_e last_gimbal_behaviour = GIMBAL_ZERO_FORCE;
-        if (last_gimbal_behaviour == GIMBAL_ZERO_FORCE && gimbal_behaviour != GIMBAL_ZERO_FORCE)
-        {
-            gimbal_behaviour = GIMBAL_INIT;
-        }
-        last_gimbal_behaviour = gimbal_behaviour;
-    }
+    // {
+    //     static gimbal_behaviour_e last_gimbal_behaviour = GIMBAL_ZERO_FORCE;
+    //     if (last_gimbal_behaviour == GIMBAL_ZERO_FORCE && gimbal_behaviour != GIMBAL_ZERO_FORCE)
+    //     {
+    //         gimbal_behaviour = GIMBAL_INIT;
+    //     }
+    //     last_gimbal_behaviour = gimbal_behaviour;
+    // }
 
 
 }
