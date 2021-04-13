@@ -348,9 +348,15 @@ void EXTI15_10_IRQHandler(void)
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_14);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 	if ((GPIOE->IDR & 0x2000)==0)
+	{
     chassis_move.chassis_auto_submode = MOVE_TO_RIGHT;
+		round_loop = 0;
+	}
 	if ((GPIOE->IDR & 0x4000)==0)
+	{
     chassis_move.chassis_auto_submode = MOVE_TO_LEFT;
+		round_loop = 0;
+	}
 //	buzzer_on(31, 20000);
 //	if((OI_RXD6)==0)
 //		{	//buzzer_on(31, 20000);

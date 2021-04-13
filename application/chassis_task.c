@@ -122,7 +122,7 @@ static void chassis_control_loop(chassis_move_t *chassis_move_control_loop);
 uint32_t chassis_high_water;
 #endif
 
-
+uint16_t round_loop = 0 ;
 
 //底盘运动数据
 chassis_move_t chassis_move;
@@ -536,13 +536,11 @@ static void chassis_set_contorl(chassis_move_t *chassis_move_control)
 //BREAKPOINT: AUTO MODE TO MOTOR SET
         if(chassis_move_control->chassis_auto_submode == MOVE_TO_LEFT)
         {
-          //chassis_move_control->vx_set = -3;
-          chassis_move_control->vx_set = 0;
+          chassis_move_control->vx_set = (-CHASSIS_AUTO_SPEED)*((320-round_loop)/320.0f);
         }
         else if(chassis_move_control->chassis_auto_submode == MOVE_TO_RIGHT)
         {
-         // chassis_move_control->vx_set = 3;
-          chassis_move_control->vx_set = 0;
+          chassis_move_control->vx_set = (CHASSIS_AUTO_SPEED)*((320-round_loop)/320.0f);
         }
         // else if(chassis_move_control->chassis_auto_submode == DECLINE_TO_LEFT)
         // {

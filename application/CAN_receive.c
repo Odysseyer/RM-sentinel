@@ -24,8 +24,11 @@
 
 #include "main.h"
 #include "bsp_rng.h"
+extern uint16_t round_loop;
 
-
+//电机码盘值最大以及中值
+#define HALF_ECD_RANGE  4096
+#define ECD_RANGE       8191
 #include "detect_task.h"
 
 extern CAN_HandleTypeDef hcan1;
@@ -50,6 +53,8 @@ static CAN_TxHeaderTypeDef  gimbal_tx_message;
 static uint8_t              gimbal_can_send_data[8];
 static CAN_TxHeaderTypeDef  chassis_tx_message;
 static uint8_t              chassis_can_send_data[8];
+
+static int loop_rount_buffer[4] = {0};
 
 /**
   * @brief          hal CAN fifo call back, receive motor data
@@ -82,6 +87,14 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
             //get motor id
             i = rx_header.StdId - CAN_3508_M1_ID;
             get_motor_measure(&motor_chassis[i], rx_data);
+            if(i==3)
+							{
+								if (motor_chassis[i].ecd - motor_chassis[i].last_ecd > HALF_ECD_RANGE  | motor_chassis[i].ecd - motor_chassis[i].last_ecd < -HALF_ECD_RANGE )
+									{
+										round_loop++;
+									}
+							}
+
             detect_hook(CHASSIS_MOTOR1_TOE + i);
             break;
         }

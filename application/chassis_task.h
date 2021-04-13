@@ -67,6 +67,10 @@
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_VY 0.25f
 #define MOTOR_SPEED_TO_CHASSIS_SPEED_WZ 0.25f
 
+//#define CHASSIS_AUTO_SPEED 2
+
+#define CHASSIS_AUTO_SPEED 0
+
 
 #define MOTOR_DISTANCE_TO_CENTER 0.2f
 
@@ -140,6 +144,8 @@ typedef enum
   CHASSIS_VECTOR_RAW,                 //control-current will be sent to CAN bus derectly.
   CHASSIS_VECTOR_AUTO
 } chassis_mode_e;
+
+extern uint16_t round_loop;
 
 typedef enum
 {

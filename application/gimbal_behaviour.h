@@ -94,10 +94,10 @@ typedef enum
   GIMBAL_AUTO_SHOOT     
 } gimbal_behaviour_e;
 
-#define MAX_YAW_RAD -1.3
-#define MIN_YAW_RAD -2.7
-#define MAX_PITCH_RAD 0.18
-#define MIN_PITCH_RAD -2.9
+#define MAX_YAW_RAD -1.2
+#define MIN_YAW_RAD -2.9
+#define MAX_PITCH_RAD 2.28
+#define MIN_PITCH_RAD 1.58
 
 /**
   * @brief          the function is called by gimbal_set_mode function in gimbal_task.c

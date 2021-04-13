@@ -81,7 +81,11 @@ void DMA2_Stream7_IRQHandler(void);
 extern unsigned short distance_to_left;
 extern unsigned short distance_to_right;
 extern unsigned short flag;
+extern uint16_t round_loop;
+
 /* USER CODE END EFP */
+
+
 
 #ifdef __cplusplus
 }
