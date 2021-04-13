@@ -208,8 +208,7 @@ static void gimbal_motor_raw_angle_control(gimbal_motor_t *gimbal_motor);
   * @param[out]     gimbal_motor:yaw电机或者pitch电机
   * @retval         none
   */
-static void gimbal_relative_angle_limit_yaw(gimbal_motor_t *gimbal_motor, fp32 add);
-static void gimbal_relative_angle_limit_pitch(gimbal_motor_t *gimbal_motor, fp32 add);
+static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, fp32 add);
 
 /**
   * @brief          gimbal angle pid init, because angle is in range(-pi,pi),can't use PID in pid.c
@@ -286,6 +285,8 @@ static fp32 gimbal_PID_calc(gimbal_PID_t *pid, fp32 get, fp32 set, fp32 error_de
   */
 static void calc_gimbal_cali(const gimbal_step_cali_t *gimbal_cali, uint16_t *yaw_offset, uint16_t *pitch_offset, fp32 *max_yaw, fp32 *min_yaw, fp32 *max_pitch, fp32 *min_pitch);
 
+static void gimbal_offset_manually(void);
+
 
 #if GIMBAL_TEST_MODE
 //j-scope 帮助pid调参
@@ -335,8 +336,11 @@ void gimbal_task(void const *pvParameters)
 
     while (1)
     {
+        gimbal_offset_manually();
         gimbal_set_mode(&gimbal_control);                    //设置云台控制模式
+               // gimbal_behaviour = GIMBAL_AUTO_SHOOT;
         gimbal_mode_change_control_transit(&gimbal_control); //控制模式切换 控制数据过渡
+
         gimbal_feedback_update(&gimbal_control);             //云台数据反馈
         gimbal_set_control(&gimbal_control);                 //设置云台控制量
         gimbal_control_loop(&gimbal_control);                //云台控制PID计算
@@ -837,7 +841,7 @@ static void gimbal_set_control(gimbal_control_t *set_control)
     else if (set_control->gimbal_yaw_motor.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
     {
         //enconde模式下，电机编码角度控制
-        gimbal_relative_angle_limit_yaw(&set_control->gimbal_yaw_motor, add_yaw_angle);
+        gimbal_relative_angle_limit(&set_control->gimbal_yaw_motor, add_yaw_angle);
     }
 
     //pitch电机模式控制
@@ -849,7 +853,7 @@ static void gimbal_set_control(gimbal_control_t *set_control)
     else if (set_control->gimbal_pitch_motor.gimbal_motor_mode == GIMBAL_MOTOR_ENCONDE)
     {
         //enconde模式下，电机编码角度控制
-        gimbal_relative_angle_limit_pitch(&set_control->gimbal_pitch_motor, add_pitch_angle);
+        gimbal_relative_angle_limit(&set_control->gimbal_pitch_motor, add_pitch_angle);
     }
 }
 /**
@@ -905,64 +909,34 @@ static void gimbal_set_control(gimbal_control_t *set_control)
   * @param[out]     gimbal_motor:yaw电机或者pitch电机
   * @retval         none
   */
-static void gimbal_relative_angle_limit_yaw(gimbal_motor_t *gimbal_motor, fp32 add)
+static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, fp32 add)
 {
     if (gimbal_motor == NULL)
     {
         return;
     }
+    
 
     if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
     {
       gimbal_motor->relative_angle_set = add;
-      //在自动模式直接计算绝对角度，在其他模式计算增量
     }
     else
-    { 
+    {
       gimbal_motor->relative_angle_set += add;
     }
 
-    
+
     //是否超过最大 最小值
-    if (gimbal_motor->relative_angle_set > MAX_YAW_RAD)
+    if (gimbal_motor->relative_angle_set > gimbal_motor->max_relative_angle)
     {
-        gimbal_motor->relative_angle_set = MAX_YAW_RAD;
+        gimbal_motor->relative_angle_set = gimbal_motor->max_relative_angle;
     }
-    else if (gimbal_motor->relative_angle_set < MIN_YAW_RAD)
+    else if (gimbal_motor->relative_angle_set < gimbal_motor->min_relative_angle)
     {
-        gimbal_motor->relative_angle_set = MIN_YAW_RAD;
+        gimbal_motor->relative_angle_set = gimbal_motor->min_relative_angle;
     }
 }
-
-static void gimbal_relative_angle_limit_pitch(gimbal_motor_t *gimbal_motor, fp32 add)
-{
-    if (gimbal_motor == NULL)
-    {
-        return;
-    }
-
-    if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
-    {
-      gimbal_motor->relative_angle_set = add;
-      //在自动模式直接计算绝对角度，在其他模式计算增量
-    }
-    else
-    { 
-      gimbal_motor->relative_angle_set += add;
-    }
-
-    
-    //是否超过最大 最小值
-    if (gimbal_motor->relative_angle_set > MAX_PITCH_RAD)
-    {
-        gimbal_motor->relative_angle_set = MAX_PITCH_RAD;
-    }
-    else if (gimbal_motor->relative_angle_set < MIN_PITCH_RAD)
-    {
-        gimbal_motor->relative_angle_set = MIN_PITCH_RAD;
-    }
-}
-
 
 /**
   * @brief          control loop, according to control set-point, calculate motor current, 
@@ -1170,4 +1144,13 @@ static void gimbal_PID_clear(gimbal_PID_t *gimbal_pid_clear)
     }
     gimbal_pid_clear->err = gimbal_pid_clear->set = gimbal_pid_clear->get = 0.0f;
     gimbal_pid_clear->out = gimbal_pid_clear->Pout = gimbal_pid_clear->Iout = gimbal_pid_clear->Dout = 0.0f;
+}
+
+
+static void gimbal_offset_manually(void)
+{
+  gimbal_control.gimbal_pitch_motor.max_relative_angle = 2.2;
+  gimbal_control.gimbal_pitch_motor.min_relative_angle = 1.5;
+  gimbal_control.gimbal_yaw_motor.max_relative_angle = -1.3;
+  gimbal_control.gimbal_yaw_motor.min_relative_angle = -2.9;
 }

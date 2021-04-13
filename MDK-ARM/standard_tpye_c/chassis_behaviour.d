@@ -33,3 +33,4 @@ standard_tpye_c\chassis_behaviour.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\string.
 standard_tpye_c\chassis_behaviour.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 standard_tpye_c\chassis_behaviour.o: ../Inc/stm32f4xx_it.h
 standard_tpye_c\chassis_behaviour.o: ..\application\gimbal_behaviour.h
+standard_tpye_c\chassis_behaviour.o: ..\application\gimbal_task.h

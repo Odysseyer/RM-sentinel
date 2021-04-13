@@ -81,7 +81,23 @@
 #define YAW_ENCODE_RELATIVE_PID_MAX_OUT   10.0f
 #define YAW_ENCODE_RELATIVE_PID_MAX_IOUT  0.0f
 
+//自瞄参数
+#define YAW_FIX_RIGHT 0.477464829275686f
+#define YAW_FIX_LEFT 1.81436635124761
+#define PITCH_FIX 1 //角度控制修正参数
 
+  //摄像头距离云台位置参数
+#define HEIGHT_DIFF 190  //水平距离差
+#define LENGHT_DIFF 85 //高度距离差
+
+#define YAW_OFFSET -2.12
+#define PITCH_OFFSET 1.57
+
+
+
+  //摄像头与世界坐标系偏转角度
+#define PITCH_CAMERA_ANGLE  0.78539816339f // Pi/4
+#define YAW_CAMERA_ANGLE  0
 //任务初始化 空闲一段时间
 #define GIMBAL_TASK_INIT_TIME 201
 //yaw,pitch控制通道以及状态开关通道
@@ -319,3 +335,5 @@ extern bool_t cmd_cali_gimbal_hook(uint16_t *yaw_offset, uint16_t *pitch_offset,
   */
 extern void set_cali_gimbal_hook(const uint16_t yaw_offset, const uint16_t pitch_offset, const fp32 max_yaw, const fp32 min_yaw, const fp32 max_pitch, const fp32 min_pitch);
 #endif
+
+extern gimbal_control_t gimbal_control;

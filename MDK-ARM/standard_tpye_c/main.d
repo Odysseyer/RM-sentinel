@@ -88,6 +88,7 @@ standard_tpye_c\main.o: ..\application\gimbal_task.h
 standard_tpye_c\main.o: ..\components\controller\pid.h
 standard_tpye_c\main.o: ..\components\algorithm\user_lib.h
 standard_tpye_c\main.o: ..\application\detect_task.h
+standard_tpye_c\main.o: ..\application\gimbal_task.h
 standard_tpye_c\main.o: ..\application\INS_task.h
 standard_tpye_c\main.o: ..\application\led_flow_task.h
 standard_tpye_c\main.o: ..\application\oled_task.h

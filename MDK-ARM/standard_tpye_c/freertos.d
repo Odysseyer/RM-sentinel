@@ -68,6 +68,7 @@ standard_tpye_c\freertos.o: ..\application\remote_control.h
 standard_tpye_c\freertos.o: ..\bsp\boards\bsp_rc.h
 standard_tpye_c\freertos.o: ..\components\algorithm\user_lib.h
 standard_tpye_c\freertos.o: ..\application\detect_task.h
+standard_tpye_c\freertos.o: ..\application\gimbal_task.h
 standard_tpye_c\freertos.o: ..\application\INS_task.h
 standard_tpye_c\freertos.o: ..\application\led_flow_task.h
 standard_tpye_c\freertos.o: ..\application\oled_task.h
