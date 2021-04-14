@@ -286,7 +286,7 @@ static void shoot_set_mode(void)
     {
         if(shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
         {
-            shoot_control.shoot_mode =SHOOT_READY_BULLET;
+//            shoot_control.shoot_mode =SHOOT_READY_BULLET;
         }
     }
     //如果云台状态是 无力状态，就关闭射击
