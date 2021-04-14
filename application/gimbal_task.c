@@ -919,7 +919,8 @@ static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, fp32 add)
 
     if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
     {
-      gimbal_motor->relative_angle_set = add;
+     // gimbal_motor->relative_angle_set = add;
+     return ;
     }
     else
     {

@@ -770,21 +770,32 @@ static void gimbal_relative_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control
     *yaw = yaw_channel * YAW_RC_SEN - gimbal_control_set->gimbal_rc_ctrl->mouse.x * YAW_MOUSE_SEN;
     *pitch = pitch_channel * PITCH_RC_SEN + gimbal_control_set->gimbal_rc_ctrl->mouse.y * PITCH_MOUSE_SEN;
 
+gimbal_control.gimbal_yaw_motor.relative_angle_set = *yaw;
+gimbal_control.gimbal_pitch_motor.relative_angle_set = *pitch;
 
 }
 
 fp32 auto_shoot_angle[4];
 fp32 x,y,z;
 
+static fp32 absfp32(fp32 x,fp32 y);
+static fp32 absfp32(fp32 x,fp32 y)
+{
+  if (x>y)
+  {
+    return x-y;
+  }
+  else
+    return y-x;
+  
+}
+
 static void gimbal_auto_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_control_set)
 {
-    static uint16_t judge_misdetect[50]={0};
-    static uint16_t last_data=0, delta , standard;
-    static uint8_t length_of_quality=0;
-    static uint8_t temp ,flag_permit;
-    fp32 temp_pitch ,temp_yaw;
 
-
+  static fp32 last_data[3] = {0};
+  static uint8_t first_insight = 1;
+  static uint8_t count =0;
     // if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
     // {
     //     return;
@@ -798,77 +809,60 @@ static void gimbal_auto_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *
     // *pitch = pitch_channel * PITCH_RC_SEN + gimbal_control_set->gimbal_rc_ctrl->mouse.y * PITCH_MOUSE_SEN;
 
   //将相机坐标系转换为世界坐标系
-//note 自己写的，不太靠谱...
-  if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
-  {
-    return;
-  }
 
   x = latest_data.t_x * cos(YAW_CAMERA_ANGLE) - latest_data.t_z * sin(YAW_CAMERA_ANGLE);
   y = latest_data.t_y * cos(PITCH_CAMERA_ANGLE) + latest_data.t_z * cos(YAW_CAMERA_ANGLE) * sin(PITCH_CAMERA_ANGLE) + latest_data.t_x * sin(PITCH_CAMERA_ANGLE) * sin(YAW_CAMERA_ANGLE);
   z = latest_data.t_z * cos(PITCH_CAMERA_ANGLE) * cos(YAW_CAMERA_ANGLE) - latest_data.t_y * sin(PITCH_CAMERA_ANGLE) + latest_data.t_x * cos(PITCH_CAMERA_ANGLE) * sin(YAW_CAMERA_ANGLE);
 
-  //转换到云台为原点的坐标系
-  y -= HEIGHT_DIFF;
-  z += LENGHT_DIFF; 
-
-  temp_pitch = ( atan(y/z) + PITCH_OFFSET);
-  temp_yaw = (  atan(x/z) + YAW_OFFSET);
-
-
-
-//   if (latest_data.t_x == -1  || y> 1500 || z>2800 || y<800 || z<800 )
-//   {
-//     length_of_quality --;
-//     return;
-//   }
-
-//   if (length_of_quality>40)
-//     length_of_quality = 40;
-//   else if(length_of_quality < 1)
-//   {
-//     length_of_quality = 0;
-//     flag_permit = 1;
-//   }
-    
-
-// delta = x - last_data;
-  
-
-  // if (abs(delta - standard)<50 || flag_permit ==1)
-  // {
-  //   flag_permit = 0;
-  //   for ( temp = length_of_quality ; temp > 0 ; temp--)
-  //   {
-  //     judge_misdetect[temp+1] = judge_misdetect[temp];
-  //   }
-  //   judge_misdetect[0] = delta;
-  //   length_of_quality++;
-  //   standard = judge_misdetect[0]/2 + judge_misdetect[length_of_quality+1]/2;
-  // }
-  // else 
-  if (temp_yaw > gimbal_control.gimbal_yaw_motor.max_relative_angle|| temp_pitch > gimbal_control.gimbal_pitch_motor.max_relative_angle)
+  if (yaw == NULL || pitch == NULL || gimbal_control_set == NULL)
   {
     return;
   }
 
+if (latest_data.t_x == -1  || y> 1500 || z>2800 || y<800 || z<500 )
+  // {
+  //   count++;
+     return;
+  // }
+  //转换到云台为原点的坐标系
+  y -= HEIGHT_DIFF;
+  z += LENGHT_DIFF; 
   
+// if( (atan(x/z) + YAW_OFFSET) >gimbal_control.gimbal_yaw_motor.max_relative_angle || 
+//  ( atan(y/z) + PITCH_OFFSET)> gimbal_control.gimbal_pitch_motor.max_relative_angle)
+//  {
+//    return ;
+//  }
+// else if ((absfp32(x,last_data[0])+ absfp32(y,last_data[1])+ absfp32(z,last_data[2]) > 1200 ) & first_insight==0 )
+// {
+//  // first_insight = 1;
+//   return ;
+// }
+
+
+// if (count >20 )
+// {
+//   first_insight == 1;
+// }
+
+
   //角度赋值
+  *yaw = (  atan(x/z) + YAW_OFFSET);
 
-  *yaw = temp_yaw;
-
-
-  *pitch = temp_pitch;
-
+  *pitch = ( atan(y/z) + PITCH_OFFSET);
   
+  gimbal_control.gimbal_yaw_motor.relative_angle_set = *yaw;
+  gimbal_control.gimbal_pitch_motor.relative_angle_set = *pitch;
 
-  auto_shoot_angle[0] = *yaw;
-  auto_shoot_angle[1] = *pitch;
-  auto_shoot_angle[2] = atan(x/z);
-  auto_shoot_angle[3] = atan(y/z);
+
+  // auto_shoot_angle[0] = *yaw;
+  // auto_shoot_angle[1] = *pitch;
+  // auto_shoot_angle[2] = atan(x/z);
+  // auto_shoot_angle[3] = atan(y/z);
+  // last_data[0] = x;
+  // last_data[1] = y;
+  // last_data[2] = z;
  
- last_data = x;
-
  }
 
 
