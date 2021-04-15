@@ -4,6 +4,8 @@
 #include "CRC8_CRC16.h"
 #include "protocol.h"
 
+#include "usbd_cdc_if.h"
+
 #include "usb_task.h"
 
 frame_header_struct_t referee_receive_header;
@@ -122,9 +124,11 @@ void referee_data_solve(uint8_t *frame)
         case ROBOT_STATE_CMD_ID:
         {
             memcpy(&robot_state, frame + index, sizeof(robot_state));
-            id_packet_to_nano[1] = robot_state.robot_id;
-            for( i =0; i<3 ;i++)
-                usb_printf("%c",id_packet_to_nano[i]);
+            if (robot_state.robot_id <10)
+                id_packet_to_nano[1] = 0;
+            else
+                id_packet_to_nano[1] = 1;
+            CDC_Transmit_FS(id_packet_to_nano, 3);
         }
         break;
         case POWER_HEAT_DATA_CMD_ID:

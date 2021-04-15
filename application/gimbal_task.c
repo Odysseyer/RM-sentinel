@@ -920,16 +920,7 @@ static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, fp32 add)
     if (gimbal_behaviour == GIMBAL_AUTO_SHOOT)
     {
      // gimbal_motor->relative_angle_set = add;
-     return ;
-    }
-    else
-    {
-      gimbal_motor->relative_angle_set += add;
-    }
-
-
-    //是否超过最大 最小值
-    if (gimbal_motor->relative_angle_set > gimbal_motor->max_relative_angle)
+         if (gimbal_motor->relative_angle_set > gimbal_motor->max_relative_angle)
     {
         gimbal_motor->relative_angle_set = gimbal_motor->max_relative_angle;
     }
@@ -937,6 +928,19 @@ static void gimbal_relative_angle_limit(gimbal_motor_t *gimbal_motor, fp32 add)
     {
         gimbal_motor->relative_angle_set = gimbal_motor->min_relative_angle;
     }
+     return ;
+    }
+    else
+    {
+      //gimbal_motor->relative_angle_set += add;
+      gimbal_control.gimbal_yaw_motor.relative_angle_set = YAW_OFFSET;
+      gimbal_control.gimbal_pitch_motor.relative_angle_set = PITCH_OFFSET+0.3;
+      return;
+      
+    }
+
+
+    //是否超过最大 最小值
 }
 
 /**

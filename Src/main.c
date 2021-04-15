@@ -52,6 +52,7 @@
 #include "usb_task.h"
 #include "voltage_task.h"
 #include "stdio.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -151,7 +152,7 @@ int main(void)
 
   /* Call init function for freertos objects (in freertos.c) */
   MX_FREERTOS_Init();
-
+__HAL_TIM_SetCompare(&htim3, TIM_CHANNEL_3, 8399);
   /* Start scheduler */
   osKernelStart();
 
@@ -162,7 +163,6 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

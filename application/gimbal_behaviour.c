@@ -87,6 +87,8 @@
 #include "user_lib.h"
 #include "usbd_cdc_if.h"
 
+#include "referee.h"
+
 //when gimbal is in calibrating, set buzzer frequency and strenght
 //当云台在校准, 设置蜂鸣器频率和强度
 #define gimbal_warn_buzzer_on() buzzer_on(31, 20000)
@@ -845,12 +847,38 @@ if (latest_data.t_x == -1  || y> 1500 || z>2800 || y<800 || z<500 )
 //   first_insight == 1;
 // }
 
-
+if(latest_data.center_x>10000&& latest_data.center_x<25000 && latest_data.center_y<20000)
+{
   //角度赋值
-  *yaw = (  atan(x/z) + YAW_OFFSET);
-
+//  *yaw = (  atan(x/z) + YAW_OFFSET);
+  *yaw = (  atan(x/z)*0.9 + YAW_OFFSET);
+//  *pitch = ( atan(y/z)*0.6 + PITCH_OFFSET);
   *pitch = ( atan(y/z) + PITCH_OFFSET);
+}
+else if((latest_data.center_x<10000 || latest_data.center_x>25000) && (latest_data.center_y<20000))
+{
+//  *yaw = (  atan(x/z) + YAW_OFFSET);
+  *yaw = (  atan(x/z)*0.93 + YAW_OFFSET);
+//  *pitch = ( atan(y/z)*0.6 + PITCH_OFFSET);
+  *pitch = ( atan(y/z)*0.9 + PITCH_OFFSET - 1.5/sqrt(z*z-z) +0.02);
   
+  
+  //
+}
+else if(latest_data.center_y >20000)
+{
+//  *yaw = (  atan(x/z) + YAW_OFFSET);
+  *yaw = (  atan(x/z)*0.8 + YAW_OFFSET);
+//  *pitch = ( atan(y/z)*0.6 + PITCH_OFFSET);
+  *pitch = ( atan(y/z)*0.8 + PITCH_OFFSET);
+}
+else
+  return;
+
+
+//shoot_data_t.bullet_speed;
+
+
   gimbal_control.gimbal_yaw_motor.relative_angle_set = *yaw;
   gimbal_control.gimbal_pitch_motor.relative_angle_set = *pitch;
 

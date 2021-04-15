@@ -181,6 +181,10 @@ typedef __packed struct
 extern void init_referee_struct_data(void);
 extern void referee_data_solve(uint8_t *frame);
 
+extern ext_shoot_data_t shoot_data_t;
+
+
+
 extern void get_chassis_power_and_buffer(fp32 *power, fp32 *buffer);
 
 extern uint8_t get_robot_id(void);

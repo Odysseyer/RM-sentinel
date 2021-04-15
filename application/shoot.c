@@ -117,7 +117,7 @@ int16_t shoot_control_loop(void)
 
     shoot_set_mode();        //设置状态机
     shoot_feedback_update(); //更新数据
-
+//shoot_control.shoot_mode = SHOOT_READY_FRIC;
 
     if (shoot_control.shoot_mode == SHOOT_STOP)
     {
@@ -415,7 +415,7 @@ static void trigger_motor_turn_back(void)
     }
     else
     {
-        shoot_control.speed_set = -shoot_control.trigger_speed_set;
+       // shoot_control.speed_set = -shoot_control.trigger_speed_set;
     }
 
     if(fabs(shoot_control.speed) < BLOCK_TRIGGER_SPEED && shoot_control.block_time < BLOCK_TIME)
@@ -456,7 +456,7 @@ static void shoot_bullet_control(void)
     if (rad_format(shoot_control.set_angle - shoot_control.angle) > 0.05f)
     {
         //没到达一直设置旋转速度
-        shoot_control.trigger_speed_set = TRIGGER_SPEED;
+        shoot_control.trigger_speed_set = -TRIGGER_SPEED;
         trigger_motor_turn_back();
     }
     else

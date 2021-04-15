@@ -54,8 +54,8 @@
 #define MOTOR_ECD_TO_ANGLE          0.000021305288720633905968306772076277f
 #define FULL_COUNT                  18
 //拨弹速度
-#define TRIGGER_SPEED               10.0f
-#define CONTINUE_TRIGGER_SPEED      15.0f
+#define TRIGGER_SPEED               5.0f
+#define CONTINUE_TRIGGER_SPEED      5.0f
 #define READY_TRIGGER_SPEED         5.0f
 
 #define KEY_OFF_JUGUE_TIME          500
@@ -95,6 +95,9 @@ typedef enum
     SHOOT_CONTINUE_BULLET,
     SHOOT_DONE,
 } shoot_mode_e;
+
+
+//extern shoot_control_t shoot_control;          //射击数据
 
 
 typedef struct

@@ -90,14 +90,14 @@
 #define HEIGHT_DIFF 190  //水平距离差
 #define LENGHT_DIFF 85 //高度距离差
 
-#define YAW_OFFSET -2.12
-#define PITCH_OFFSET 1.57
+#define YAW_OFFSET -2.11
+#define PITCH_OFFSET 1.4
 
 
 
   //摄像头与世界坐标系偏转角度
 #define PITCH_CAMERA_ANGLE  0.78539816339f // Pi/4
-#define YAW_CAMERA_ANGLE  0
+#define YAW_CAMERA_ANGLE  -0.0174532925f
 //任务初始化 空闲一段时间
 #define GIMBAL_TASK_INIT_TIME 201
 //yaw,pitch控制通道以及状态开关通道
