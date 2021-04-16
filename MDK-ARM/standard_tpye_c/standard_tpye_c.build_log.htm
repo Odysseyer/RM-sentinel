@@ -3,68 +3,52 @@
 <pre>
 <h1>µVision Build Log</h1>
 <h2>Tool Versions:</h2>
-IDE-Version: ¦ÌVision V5.33.0.0
-Copyright (C) 2020 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: CHEN BAILONG, 1, LIC=TIVNB-2I501-CXKU6-D3CFQ-UFX8S-7SIY8
+IDE-Version: ¦ÌVision V5.21.1.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: X X, X, LIC=QF82M-XNE2H-MMV9I-T3MIS-E9BM1-I6GPA
  
 Tool Versions:
-Toolchain:       MDK-ARM Plus  Version: 5.33.0.0
+Toolchain:       MDK-ARM Plus  Version: 5.21a
 Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
-C Compiler:      Armcc.exe V5.06 update 7 (build 960)
-Assembler:       Armasm.exe V5.06 update 7 (build 960)
-Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
-Library Manager: ArmAr.exe V5.06 update 7 (build 960)
-Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
-CPU DLL:         SARMCM3.DLL V5.33.0.0
-Dialog DLL:      DCM.DLL V1.17.3.0
-Target DLL:      Segger\JL2CM3.dll V2.97.0.0
-Dialog DLL:      TCM.DLL V1.48.0.0
+C Compiler:      Armcc.exe V5.06 update 3 (build 300)
+Assembler:       Armasm.exe V5.06 update 3 (build 300)
+Linker/Locator:  ArmLink.exe V5.06 update 3 (build 300)
+Library Manager: ArmAr.exe V5.06 update 3 (build 300)
+Hex Converter:   FromElf.exe V5.06 update 3 (build 300)
+CPU DLL:         SARMCM3.DLL V5.21a
+Dialog DLL:      DCM.DLL V1.13.8.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
+Dialog DLL:      TCM.DLL V1.14.14.0
  
 <h2>Project:</h2>
-C:\Users\42517\Documents\GitHub\RM-sentinel\MDK-ARM\standard_tpye_c.uvprojx
-Project File Date:  04/13/2021
+D:\Document\GitHub\RM-sentinel\MDK-ARM\standard_tpye_c.uvprojx
+Project File Date:  04/14/2021
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 3 (build 300)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'standard_tpye_c'
-compiling gimbal_behaviour.c...
-..\application\gimbal_behaviour.c(796): warning:  #177-D: variable "last_data"  was declared but never referenced
-    static fp32 last_data[3] = {0};
-..\application\gimbal_behaviour.c(797): warning:  #177-D: variable "first_insight"  was declared but never referenced
-    static uint8_t first_insight = 1;
-..\application\gimbal_behaviour.c(798): warning:  #177-D: variable "count"  was declared but never referenced
-    static uint8_t count =0;
-..\application\gimbal_behaviour.c(691): warning:  #177-D: function "gimbal_absolute_angle_control"  was declared but never referenced
-  static void gimbal_absolute_angle_control(fp32 *yaw, fp32 *pitch, gimbal_control_t *gimbal_control_set)
-..\application\gimbal_behaviour.c(782): warning:  #177-D: function "absfp32"  was declared but never referenced
-  static fp32 absfp32(fp32 x,fp32 y)
-..\application\gimbal_behaviour.c: 5 warnings, 0 errors
+compiling shoot.c...
 linking...
-Program Size: Code=101428 RO-data=13872 RW-data=1260 ZI-data=57572  
+Program Size: Code=101672 RO-data=13876 RW-data=1264 ZI-data=57568  
 FromELF: creating hex file...
-"standard_tpye_c\standard_tpye_c.axf" - 0 Error(s), 5 Warning(s).
+"standard_tpye_c\standard_tpye_c.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.7.0.pack
-                ARM.CMSIS.5.7.0
+                http://www.keil.com/pack/ARM.CMSIS.4.5.0.pack
+                ARM::CMSIS:CORE:4.3.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
-   * Component: CORE Version: 5.4.0
-
-Package Vendor: Keil
-                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.15.0.pack
-                Keil.STM32F4xx_DFP.2.15.0
-                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+   * Component: CORE Version: 4.3.0
 
 <h2>Collection of Component include folders:</h2>
-  .\RTE\_standard_tpye_c
-  D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include
+  D:\Document\GitHub\RM-sentinel\MDK-ARM\RTE
+  D:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include
   D:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
 
-   * Component: ARM::CMSIS:CORE:5.4.0
+   * Component: ARM::CMSIS:CORE:4.3.0
 Build Time Elapsed:  00:00:05
 </pre>
 </body>

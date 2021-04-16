@@ -878,13 +878,13 @@ ARM Macro Assembler    Page 14
               00002000 
               00002000 
               00000000 
-Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
-interwork --depend=standard_tpye_c\startup_stm32f407xx.d -ostandard_tpye_c\star
-tup_stm32f407xx.o -I..\\Inc -I..\Inc -I.\RTE\_standard_tpye_c -ID:\Keil_v5\ARM\
-PACK\ARM\CMSIS\5.7.0\CMSIS\Core\Include -ID:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DF
-P\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__UVISION_VERSI
-ON SETA 533" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" --pred
-efine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
+erwork --depend=standard_tpye_c\startup_stm32f407xx.d -ostandard_tpye_c\startup
+_stm32f407xx.o -I..\\Inc -I..\Inc -ID:\Document\GitHub\RM-sentinel\MDK-ARM\RTE 
+-ID:\Keil_v5\ARM\PACK\ARM\CMSIS\4.5.0\CMSIS\Include -ID:\Keil_v5\ARM\PACK\Keil\
+STM32F4xx_DFP\2.15.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include --predefine="__U
+VISION_VERSION SETA 521" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SE
+TA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
 
 
 

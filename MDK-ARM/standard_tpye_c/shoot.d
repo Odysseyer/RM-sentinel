@@ -78,3 +78,13 @@ standard_tpye_c\shoot.o: ..\application\usb_task.h
 standard_tpye_c\shoot.o: ..\application\gimbal_behaviour.h
 standard_tpye_c\shoot.o: ..\application\gimbal_task.h
 standard_tpye_c\shoot.o: ..\application\detect_task.h
+standard_tpye_c\shoot.o: ../Inc/usbd_cdc_if.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc/usbd_cdc.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h
+standard_tpye_c\shoot.o: ../Inc/usbd_conf.h
+standard_tpye_c\shoot.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+standard_tpye_c\shoot.o: D:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
+standard_tpye_c\shoot.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h

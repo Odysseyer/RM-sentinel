@@ -68,3 +68,8 @@ standard_tpye_c\gimbal_behaviour.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4x
 standard_tpye_c\gimbal_behaviour.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_core.h
 standard_tpye_c\gimbal_behaviour.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ioreq.h
 standard_tpye_c\gimbal_behaviour.o: ../Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_ctlreq.h
+standard_tpye_c\gimbal_behaviour.o: ..\application\referee.h
+standard_tpye_c\gimbal_behaviour.o: ..\application\protocol\protocol.h
+standard_tpye_c\gimbal_behaviour.o: ..\application\usb_task.h
+standard_tpye_c\gimbal_behaviour.o: ..\application\chassis_task.h
+standard_tpye_c\gimbal_behaviour.o: ..\application\gimbal_task.h

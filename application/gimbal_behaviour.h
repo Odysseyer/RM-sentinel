@@ -98,6 +98,7 @@ typedef enum
 #define MIN_YAW_RAD -2.9
 #define MAX_PITCH_RAD 2.28
 #define MIN_PITCH_RAD 1.58
+#define SHOOT_SPEED 14.1
 
 /**
   * @brief          the function is called by gimbal_set_mode function in gimbal_task.c

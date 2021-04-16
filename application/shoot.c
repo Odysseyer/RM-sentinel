@@ -31,6 +31,9 @@
 #include "detect_task.h"
 #include "pid.h"
 
+#include "usbd_cdc_if.h"
+
+
 #define shoot_fric1_on(pwm) fric1_on((pwm)) //摩擦轮1pwm宏定义
 #define shoot_fric2_on(pwm) fric2_on((pwm)) //摩擦轮2pwm宏定义
 #define shoot_fric_off()    fric_off()      //关闭两个摩擦轮
@@ -118,6 +121,7 @@ int16_t shoot_control_loop(void)
     shoot_set_mode();        //设置状态机
     shoot_feedback_update(); //更新数据
 //shoot_control.shoot_mode = SHOOT_READY_FRIC;
+        shoot_control.shoot_mode = SHOOT_READY_BULLET;
 
     if (shoot_control.shoot_mode == SHOOT_STOP)
     {
@@ -131,17 +135,18 @@ int16_t shoot_control_loop(void)
     }
     else if(shoot_control.shoot_mode ==SHOOT_READY_BULLET)
     {
-        if(shoot_control.key == SWITCH_TRIGGER_OFF)
+       if(shoot_control.key == SWITCH_TRIGGER_OFF)
         {
             //设置拨弹轮的拨动速度,并开启堵转反转处理
             shoot_control.trigger_speed_set = READY_TRIGGER_SPEED;
-            trigger_motor_turn_back();
+           trigger_motor_turn_back();
         }
         else
         {
             shoot_control.trigger_speed_set = 0.0f;
             shoot_control.speed_set = 0.0f;
         }
+        
         shoot_control.trigger_motor_pid.max_out = TRIGGER_READY_PID_MAX_OUT;
         shoot_control.trigger_motor_pid.max_iout = TRIGGER_READY_PID_MAX_IOUT;
     }
@@ -159,8 +164,8 @@ int16_t shoot_control_loop(void)
     else if (shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
     {
         //设置拨弹轮的拨动速度,并开启堵转反转处理
-        shoot_control.trigger_speed_set = CONTINUE_TRIGGER_SPEED;
-        trigger_motor_turn_back();
+        //shoot_control.trigger_speed_set = CONTINUE_TRIGGER_SPEED;
+       // trigger_motor_turn_back();
     }
     else if(shoot_control.shoot_mode == SHOOT_DONE)
     {
@@ -205,97 +210,113 @@ int16_t shoot_control_loop(void)
   */
 static void shoot_set_mode(void)
 {
-    static int8_t last_s = RC_SW_UP;
 
-    //上拨判断， 一次开启，再次关闭
-    if ((switch_is_up(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_up(last_s) && shoot_control.shoot_mode == SHOOT_STOP))
-    {
-        shoot_control.shoot_mode = SHOOT_READY_FRIC;
-    }
-    else if ((switch_is_up(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_up(last_s) && shoot_control.shoot_mode != SHOOT_STOP))
-    {
-        shoot_control.shoot_mode = SHOOT_STOP;
-    }
+    shoot_control.shoot_mode = SHOOT_READY_BULLET;
+    if (latest_data.center_x != -1 && shoot_control.fric1_ramp.out == shoot_control.fric1_ramp.max_value && shoot_control.fric2_ramp.out == shoot_control.fric2_ramp.max_value && (!switch_is_down(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL] )))
+        shoot_control.shoot_mode = SHOOT_CONTINUE_BULLET;
 
-    //处于中档， 可以使用键盘开启摩擦轮
-    if (switch_is_mid(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && (shoot_control.shoot_rc->key.v & SHOOT_ON_KEYBOARD) && shoot_control.shoot_mode == SHOOT_STOP)
-    {
-        shoot_control.shoot_mode = SHOOT_READY_FRIC;
-    }
-    //处于中档， 可以使用键盘关闭摩擦轮
-    else if (switch_is_mid(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && (shoot_control.shoot_rc->key.v & SHOOT_OFF_KEYBOARD) && shoot_control.shoot_mode != SHOOT_STOP)
-    {
-        shoot_control.shoot_mode = SHOOT_STOP;
-    }
+    // static int8_t last_s = RC_SW_UP;
 
-    if(shoot_control.shoot_mode == SHOOT_READY_FRIC && shoot_control.fric1_ramp.out == shoot_control.fric1_ramp.max_value && shoot_control.fric2_ramp.out == shoot_control.fric2_ramp.max_value)
-    {
-        shoot_control.shoot_mode = SHOOT_READY_BULLET;
-    }
-    else if(shoot_control.shoot_mode == SHOOT_READY_BULLET && shoot_control.key == SWITCH_TRIGGER_ON)
-    {
-        shoot_control.shoot_mode = SHOOT_READY;
-    }
-    else if(shoot_control.shoot_mode == SHOOT_READY && shoot_control.key == SWITCH_TRIGGER_OFF)
-    {
-        shoot_control.shoot_mode = SHOOT_READY_BULLET;
-    }
-    else if(shoot_control.shoot_mode == SHOOT_READY)
-    {
-        //下拨一次或者鼠标按下一次，进入射击状态
-        if ((switch_is_down(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_down(last_s)) || (shoot_control.press_l && shoot_control.last_press_l == 0) || (shoot_control.press_r && shoot_control.last_press_r == 0))
-        {
-            shoot_control.shoot_mode = SHOOT_BULLET;
-        }
-    }
-    else if(shoot_control.shoot_mode == SHOOT_DONE)
-    {
-        if(shoot_control.key == SWITCH_TRIGGER_OFF)
-        {
-            shoot_control.key_time++;
-            if(shoot_control.key_time > SHOOT_DONE_KEY_OFF_TIME)
-            {
-                shoot_control.key_time = 0;
-                shoot_control.shoot_mode = SHOOT_READY_BULLET;
-            }
-        }
-        else
-        {
-            shoot_control.key_time = 0;
-            shoot_control.shoot_mode = SHOOT_BULLET;
-        }
-    }
+    // //上拨判断， 一次开启，再次关闭
+    // if ((switch_is_up(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_up(last_s) && shoot_control.shoot_mode == SHOOT_STOP))
+    // {
+    //     shoot_control.shoot_mode = SHOOT_READY_FRIC;
+    // }
+    // else if ((switch_is_up(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_up(last_s) && shoot_control.shoot_mode != SHOOT_STOP))
+    // {
+    //     shoot_control.shoot_mode = SHOOT_STOP;
+    // }
+
+    // //处于中档， 可以使用键盘开启摩擦轮
+    // if (switch_is_mid(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && (shoot_control.shoot_rc->key.v & SHOOT_ON_KEYBOARD) && shoot_control.shoot_mode == SHOOT_STOP)
+    // {
+    //     shoot_control.shoot_mode = SHOOT_READY_FRIC;
+    // }
+    // //处于中档， 可以使用键盘关闭摩擦轮
+    // else if (switch_is_mid(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && (shoot_control.shoot_rc->key.v & SHOOT_OFF_KEYBOARD) && shoot_control.shoot_mode != SHOOT_STOP)
+    // {
+    //     shoot_control.shoot_mode = SHOOT_STOP;
+    // }
+
+    // if(shoot_control.shoot_mode == SHOOT_READY_FRIC && shoot_control.fric1_ramp.out == shoot_control.fric1_ramp.max_value && shoot_control.fric2_ramp.out == shoot_control.fric2_ramp.max_value)
+    // {
+    //     shoot_control.shoot_mode = SHOOT_READY_BULLET;
+    // }
+    // else if(shoot_control.shoot_mode == SHOOT_READY_BULLET && shoot_control.key == SWITCH_TRIGGER_ON)
+    // {
+    //     shoot_control.shoot_mode = SHOOT_READY;
+    // }
+    // else if(shoot_control.shoot_mode == SHOOT_READY && shoot_control.key == SWITCH_TRIGGER_OFF)
+    // {
+    //     shoot_control.shoot_mode = SHOOT_READY_BULLET;
+    // }
+    // else if(shoot_control.shoot_mode == SHOOT_READY)
+    // {
+    //     //下拨一次或者鼠标按下一次，进入射击状态
+    //     if ((switch_is_down(shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL]) && !switch_is_down(last_s)) || (shoot_control.press_l && shoot_control.last_press_l == 0) || (shoot_control.press_r && shoot_control.last_press_r == 0))
+    //     {
+    //         shoot_control.shoot_mode = SHOOT_BULLET;
+    //     }
+    // }
+    // else if(shoot_control.shoot_mode == SHOOT_DONE)
+    // {
+    //     if(shoot_control.key == SWITCH_TRIGGER_OFF)
+    //     {
+    //         shoot_control.key_time++;
+    //         if(shoot_control.key_time > SHOOT_DONE_KEY_OFF_TIME)
+    //         {
+    //             shoot_control.key_time = 0;
+    //             shoot_control.shoot_mode = SHOOT_READY_BULLET;
+    //         }
+    //     }
+    //     else
+    //     {
+    //         shoot_control.key_time = 0;
+    //         shoot_control.shoot_mode = SHOOT_BULLET;
+    //     }
+    //}
     
 
 
-    if(shoot_control.shoot_mode > SHOOT_READY_FRIC)
-    {
-        //鼠标长按一直进入射击状态 保持连发
-        if ((shoot_control.press_l_time == PRESS_LONG_TIME) || (shoot_control.press_r_time == PRESS_LONG_TIME) || (shoot_control.rc_s_time == RC_S_LONG_TIME))
-        {
-            shoot_control.shoot_mode = SHOOT_CONTINUE_BULLET;
-        }
-        else if(shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
-        {
-            shoot_control.shoot_mode =SHOOT_READY_BULLET;
-        }
-    }
+//     if(shoot_control.shoot_mode > SHOOT_READY_FRIC)
+//     {
+//         //鼠标长按一直进入射击状态 保持连发
+//         if ((shoot_control.press_l_time == PRESS_LONG_TIME) || (shoot_control.press_r_time == PRESS_LONG_TIME) || (shoot_control.rc_s_time == RC_S_LONG_TIME))
+//         {
+//             shoot_control.shoot_mode = SHOOT_CONTINUE_BULLET;
+//         }
+//         else if(shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
+//         {
+//             shoot_control.shoot_mode =SHOOT_READY_BULLET;
+//         }
+//     }
 
-    get_shoot_heat0_limit_and_heat0(&shoot_control.heat_limit, &shoot_control.heat);
-    if(!toe_is_error(REFEREE_TOE) && (shoot_control.heat + SHOOT_HEAT_REMAIN_VALUE > shoot_control.heat_limit))
-    {
-        if(shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
-        {
-//            shoot_control.shoot_mode =SHOOT_READY_BULLET;
-        }
-    }
-    //如果云台状态是 无力状态，就关闭射击
-    if (gimbal_cmd_to_shoot_stop())
-    {
-        shoot_control.shoot_mode = SHOOT_STOP;
-    }
+//     get_shoot_heat0_limit_and_heat0(&shoot_control.heat_limit, &shoot_control.heat);
+//     if(!toe_is_error(REFEREE_TOE) && (shoot_control.heat + SHOOT_HEAT_REMAIN_VALUE > shoot_control.heat_limit))
+//     {
+//         if(shoot_control.shoot_mode == SHOOT_BULLET || shoot_control.shoot_mode == SHOOT_CONTINUE_BULLET)
+//         {
+// //            shoot_control.shoot_mode =SHOOT_READY_BULLET;
+//         }
+//     }
+//     //如果云台状态是 无力状态，就关闭射击
+//     if (gimbal_cmd_to_shoot_stop())
+//     {
+//         shoot_control.shoot_mode = SHOOT_STOP;
+//     }
 
-    last_s = shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL];
+//     last_s = shoot_control.shoot_rc->rc.s[SHOOT_RC_MODE_CHANNEL];
+
+
+//if (latest_data.center_x = -1)
+    //shoot_control.shoot_mode = SHOOT_STOP;
+//else
+    //shoot_control.shoot_mode = SHOOT_CONTINUE_BULLET;
+
+
+
+
+
 }
 /**
   * @brief          射击数据更新
